@@ -9,3 +9,9 @@ const initialState: State = {
   email: '',
   password: '',
 };
+
+const SignIn = () => {
+  return <div></div>;
+};
+
+export default SignIn;
