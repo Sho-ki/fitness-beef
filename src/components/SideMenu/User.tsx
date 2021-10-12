@@ -31,27 +31,12 @@ const DrawerUser = () => {
             href='/'
             icon={AccessibilityNewIcon}
             as={`/`}
-            label={'FUCKING ROOT'}
+            label={'ROOT'}
           />
           <Divider />
-          <DrawerMenu
-            href='/'
-            icon={HomeIcon}
-            as={`/`}
-            label={'FUCKING HOME'}
-          />
-          <DrawerMenu
-            href='/'
-            icon={PeopleIcon}
-            as={`/`}
-            label={'FUCKING PEOPLE'}
-          />
-          <DrawerMenu
-            href='/'
-            icon={SettingsIcon}
-            as={`/`}
-            label={'FUCKING SETTING'}
-          />
+          <DrawerMenu href='/' icon={HomeIcon} as={`/`} label={'HOME'} />
+          <DrawerMenu href='/' icon={PeopleIcon} as={`/`} label={'PEOPLE'} />
+          <DrawerMenu href='/' icon={SettingsIcon} as={`/`} label={'SETTING'} />
         </Drawer>
       </React.Fragment>
     </>
