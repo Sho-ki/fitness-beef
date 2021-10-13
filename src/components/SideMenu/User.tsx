@@ -3,12 +3,19 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 //icons. this will be organized in one file under Icon directory
-import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
+// import HomeIcon from '@mui/icons-material/Home';
+// import PeopleIcon from '@mui/icons-material/People';
+// import SettingsIcon from '@mui/icons-material/Settings';
 
+import css from './baseStyle';
 import DrawerMenu from './index';
+import {
+  AccessibilityNewIcon,
+  HomeIcon,
+  PeopleIcon,
+  SettingsIcon,
+} from '../Icon/index';
 
 enum Position {
   TOP = 'top',
@@ -26,7 +33,12 @@ const DrawerUser = () => {
     <>
       <React.Fragment key={Position.LEFT}>
         <Button onClick={toggleMenu}>This is a test button</Button>
-        <Drawer anchor={Position.LEFT} open={state} onClose={toggleMenu}>
+        <Drawer
+          anchor={Position.LEFT}
+          open={state}
+          onClose={toggleMenu}
+          sx={{ width: 200 }}
+        >
           <DrawerMenu
             href='/'
             icon={AccessibilityNewIcon}

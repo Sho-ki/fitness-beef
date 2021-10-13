@@ -6,5 +6,9 @@ const baseStyles = css`
       align-items: center;
       justify-content: flex-start;
   }
+  .sidebar-links {
+    margin: 0 20px;
+    width: 100%
+  }
 `
 export default baseStyles
