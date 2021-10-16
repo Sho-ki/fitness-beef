@@ -12,8 +12,6 @@ type Props = {
 };
 
 const UserTabs = ({ children }: Props) => {
-  //   console.log('children', children);
-  children.forEach((child) => console.log('child,', child));
   const [value, setValue] = React.useState('0');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
