@@ -1,20 +1,7 @@
 import React from 'react';
 import { TableBody, TableRow, TableCell } from '@mui/material';
 
-interface Row {
-  name: string;
-  code: string;
-  population: number;
-  size: number;
-  density: number;
-}
-interface Column {
-  id: 'name' | 'code' | 'population' | 'size' | 'density';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
-}
+import { Row, Column } from './index';
 
 type Props = {
   rows: readonly Row[];
@@ -23,24 +10,20 @@ type Props = {
   rowsPerPage: number;
 };
 
-const Body = ({ rows, columns, page, rowsPerPage }: Props) => {
-  //   console.log('rows', rows);
+const Body: React.FC<Props> = ({ rows, columns, page, rowsPerPage }: Props) => {
   return (
     <TableBody>
       {rows
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((row) => {
           return (
-            <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+            <TableRow hover role='checkbox' tabIndex={-1} key={row.category}>
               {columns.map((column) => {
-                console.log('row', row);
-                console.log('column', column);
-                console.log(column.id + ': ' + row[column.id]);
                 const value = row[column.id];
                 return (
-                  <TableCell key={column.id} align={column.align}>
-                    {column.format && typeof value === 'number'
-                      ? column.format(value)
+                  <TableCell key={column.id} align={column.align || 'center'}>
+                    {column.id === 'amount'
+                      ? `${row.reps} x ${row.sets}`
                       : value}
                   </TableCell>
                 );
