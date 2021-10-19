@@ -5,8 +5,6 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-import Table from '../../components/Table';
-
 type Props = {
   children: React.ReactNode[];
 };
@@ -25,7 +23,9 @@ const UserTabs = ({ children }: Props) => {
           <TabList
             onChange={handleChange}
             aria-label='lab API tabs example'
-            indicatorColor='primary'
+            TabIndicatorProps={{
+              style: { backgroundColor: 'red' },
+            }}
           >
             <Tab label='Item One' value='0' />
             <Tab label='Item Two' value='1' />
