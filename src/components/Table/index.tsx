@@ -76,7 +76,7 @@ const Table = () => {
   };
 
   return (
-    <Paper sx={{ width: '50%', overflow: 'hidden', margin: '0 auto' }}>
+    <Paper sx={{ width: '80%', overflow: 'hidden', margin: '0 auto' }}>
       <div
         className='table-label'
         style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}

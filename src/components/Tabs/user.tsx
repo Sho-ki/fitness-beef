@@ -27,8 +27,8 @@ const UserTabs = ({ children }: Props) => {
               style: { backgroundColor: 'red' },
             }}
           >
-            <Tab label='Item One' value='0' />
-            <Tab label='Item Two' value='1' />
+            <Tab label='Daily Schedule' value='0' />
+            <Tab label='Weekly Schedule' value='1' />
           </TabList>
         </Box>
         {children.map((child, idx) => (

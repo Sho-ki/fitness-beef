@@ -2,6 +2,7 @@ import React from 'react';
 
 import SideMenu from '../../components/SideMenu/User';
 import Table from '../../components/Table';
+import WeeklySchedule from '../../components/WorkoutWeek';
 import Tabs from '../../components/Tabs/user';
 
 const index = () => {
@@ -10,7 +11,7 @@ const index = () => {
       <SideMenu />
       <Tabs>
         <Table />
-        Weekly Schedule will come here
+        <WeeklySchedule />
       </Tabs>
     </>
   );
