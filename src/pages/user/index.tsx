@@ -3,13 +3,16 @@ import React from 'react';
 import SideMenu from '../../components/SideMenu/User';
 import Table from '../../components/Table';
 import WeeklySchedule from '../../components/WorkoutWeek';
+import Tabs from '../../components/Tabs/user';
 
 const index = () => {
   return (
     <>
       <SideMenu />
-      {/* <Table /> */}
-      <WeeklySchedule />
+      <Tabs>
+        <Table />
+        <WeeklySchedule />
+      </Tabs>
     </>
   );
 };

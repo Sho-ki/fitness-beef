@@ -83,9 +83,17 @@ export const Grid = styled(MuiGrid)(({ theme }) => ({
 
 const WeeklySchedule = () => {
   return (
-    <Grid container>
-      <Cell schedules={MockData} />
-    </Grid>
+    <div className='schedule-container'>
+      <div
+        className='table-label'
+        style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
+      >
+        Weekly Schedule
+      </div>
+      <Grid container>
+        <Cell schedules={MockData} />
+      </Grid>
+    </div>
   );
 };
 
