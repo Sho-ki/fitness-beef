@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 
@@ -18,19 +17,19 @@ enum Position {
   RIGHT = 'right',
 }
 
-const DrawerUser = () => {
-  const [state, setState] = React.useState(false);
-  const toggleMenu = React.useCallback(() => {
-    setState(!state);
-  }, [state]);
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const DrawerUser = ({ isOpen, onClose }: Props) => {
   return (
     <>
       <React.Fragment key={Position.LEFT}>
-        <Button onClick={toggleMenu}>This is a test button</Button>
         <Drawer
           anchor={Position.LEFT}
-          open={state}
-          onClose={toggleMenu}
+          open={isOpen}
+          onClose={onClose}
           sx={{ width: 200 }}
         >
           <DrawerMenu
