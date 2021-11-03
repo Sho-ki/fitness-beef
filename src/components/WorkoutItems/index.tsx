@@ -1,16 +1,6 @@
-import {
-  Button,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { Button, List, ListItem } from '@mui/material';
 import { Box } from '@mui/system';
 import { Props } from '../../pages/user/edit';
-import WorkoutDay from '../WorkoutDay';
-import { WorkoutItem } from '../../types/workout';
 
 const WorkoutItems = ({ workoutsets }: Props) => {
   return (
@@ -45,7 +35,6 @@ const WorkoutItems = ({ workoutsets }: Props) => {
                 >
                   {workoutset.workout_item}
                 </Button>
-                {/* <ListItemText primary= /> */}
               </ListItem>
             )
         )}

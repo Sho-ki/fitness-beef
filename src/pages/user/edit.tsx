@@ -2,19 +2,13 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 
 import SideMenu from '../../components/SideMenu/User';
-import Table from '../../components/Table';
-import WeeklySchedule from '../../components/WorkoutWeek';
-import Tabs from '../../components/Tabs/user';
-import WorkoutDay from '../../components/WorkoutDay';
+
 import { WorkoutItem } from '../../types/workout';
-import WorkoutItems from '../../components/WorkoutItems';
 import WorkoutSets from '../../components/WorkoutSets';
 
 export type Props = {
   workoutsets: Array<WorkoutItem>;
 };
-
-// const workoutsets =
 
 export const rest = (workoutsets: Props) => {
   return { props: { workoutsets } };

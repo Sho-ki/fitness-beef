@@ -1,20 +1,12 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import { Box } from '@mui/system';
 import { Props } from '../../pages/user/edit';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { WorkoutItem } from '../../types/workout';
 
 const WorkoutDay = ({ workoutsets }: Props) => {
-  const [workoutSet, setWorkoutSet] = React.useState();
-
   let getDate = new Date();
   let today =
     getDate.getDate() +
@@ -125,15 +117,6 @@ const WorkoutDay = ({ workoutsets }: Props) => {
                   </ListItem>
                 )
             )}
-          {/* <ListItem sx={{ width: '100%', borderBottom: 1 }}>
-          <ListItemText primary='Push ups' secondary='Jan 9, 2014' />
-        </ListItem>
-        <ListItem sx={{ width: '100%', borderBottom: 1 }}>
-          <ListItemText primary='Work' secondary='Jan 7, 2014' />
-        </ListItem>
-        <ListItem sx={{ width: '100%', borderBottom: 1 }}>
-          <ListItemText primary='Vacation' secondary='July 20, 2014' />
-        </ListItem> */}
         </List>
       </Box>
     </>

@@ -1,14 +1,4 @@
-import {
-  Button,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
-import { Box } from '@mui/system';
-import { WorkoutItem } from '../../types/workout';
+import { Container, Grid } from '@mui/material';
 import { Props } from '../../pages/user/edit';
 import WorkoutDay from '../WorkoutDay';
 import WorkoutItems from '../WorkoutItems';
