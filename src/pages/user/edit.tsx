@@ -138,8 +138,6 @@ const testWorkoutData: WorkoutItem[] = [
 const Edit = ({ workoutsets }: Props) => {
   return (
     <>
-      <SideMenu />
-
       <WorkoutSets workoutsets={testWorkoutData} />
     </>
   );
