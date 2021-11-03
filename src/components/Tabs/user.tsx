@@ -17,18 +17,29 @@ const UserTabs = ({ children }: Props) => {
   };
 
   return (
-    <Box sx={{ width: '80%', typography: 'body1', margin: '0 auto' }}>
+    <Box
+      sx={{
+        width: '80%',
+        typography: 'body1',
+        margin: '0 auto',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+      }}
+    >
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList
             onChange={handleChange}
-            aria-label='lab API tabs example'
+            aria-label='schedule-tabs'
             TabIndicatorProps={{
               style: { backgroundColor: 'red' },
             }}
           >
-            <Tab label='Daily Schedule' value='0' />
-            <Tab label='Weekly Schedule' value='1' />
+            <Tab label='Daily Schedule' value='0' style={{ padding: '10px' }} />
+            <Tab
+              label='Weekly Schedule'
+              value='1'
+              style={{ padding: '10px' }}
+            />
           </TabList>
         </Box>
         {children.map((child, idx) => (
