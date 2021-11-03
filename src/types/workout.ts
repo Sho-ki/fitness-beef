@@ -1,19 +1,33 @@
-export type PostUserWorkout = {
-  id: number;
-  name: string;
-  category: string;
-  sets: number;
-  times: number;
-  orderIndex: number;
-};
-
 export type WorkoutItem = {
-  userId: number;
-  user_workouts_id: number;
-  training_name: string;
-  sets: number;
-  times: number;
-  order_index: number;
-  label: string;
-  scheduled_day: 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | null;
+  id: number | null;
+  day_of_week: 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | null;
+  users_id: number | null;
+  set_order: number | null;
+  reps: number | null;
+  sets: number | null;
+  workout_item: string | null;
+  category:
+    | 'Warm Up'
+    | 'Arms'
+    | 'Legs'
+    | 'Chest'
+    | 'Abs'
+    | 'Glutes'
+    | 'Back'
+    | 'Shoulders'
+    | 'Upper Body'
+    | 'Lower Body'
+    | null;
+  color:
+    | 'gray'
+    | 'blue'
+    | 'darkblue'
+    | 'green'
+    | 'darkgreen'
+    | 'purple'
+    | 'red'
+    | 'pink'
+    | 'orange'
+    | 'black'
+    | null;
 };
