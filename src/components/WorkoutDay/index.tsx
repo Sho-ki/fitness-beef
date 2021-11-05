@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import { Box } from '@mui/system';
 import { Props } from '../../pages/user/edit';
 import { Button, Typography } from '@mui/material';
-import { WorkoutItem } from '../../types/workout';
+import { WorkoutSet } from '../../types/workout';
 
 const WorkoutDay = ({ workoutsets }: Props) => {
   let getDate = new Date();
@@ -18,7 +18,7 @@ const WorkoutDay = ({ workoutsets }: Props) => {
 
   const [dayOfToday, setDayOfToday] = React.useState(dayOfWeek);
 
-  let week: Array<WorkoutItem[]> = [[], [], [], [], [], [], []];
+  let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
 
   workoutsets.sort((a, b) => {
     if (!a.set_order || !b.set_order) {

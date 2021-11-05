@@ -1,4 +1,4 @@
-export type WorkoutItem = {
+export type WorkoutSet = {
   id: number | null;
   day_of_week: 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | null;
   users_id: number | null;
@@ -30,4 +30,35 @@ export type WorkoutItem = {
     | 'orange'
     | 'black'
     | null;
+};
+
+export type WorkoutItem = {
+  id: number;
+  workout_item: string;
+  workout_categories_id: number;
+  category:
+    | 'Warm Up'
+    | 'Arms'
+    | 'Legs'
+    | 'Chest'
+    | 'Abs'
+    | 'Glutes'
+    | 'Back'
+    | 'Shoulders'
+    | 'Upper Body'
+    | 'Lower Body'
+    | null;
+  color:
+    | 'gray'
+    | 'blue'
+    | 'darkblue'
+    | 'green'
+    | 'darkgreen'
+    | 'purple'
+    | 'red'
+    | 'pink'
+    | 'orange'
+    | 'black'
+    | null;
+  users_id: number;
 };
