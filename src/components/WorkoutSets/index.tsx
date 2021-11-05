@@ -1,9 +1,9 @@
 import { Container, Grid } from '@mui/material';
 import { Props } from '../../pages/user/edit';
 import WorkoutDay from '../WorkoutDay';
-import WorkoutItems from '../WorkoutItems';
+import ItemModal from '../WorkoutItems/ItemModal';
 
-const WorkoutSets = ({ workoutsets }: Props) => {
+const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
   return (
     <Container>
       <Grid container spacing={2}>
@@ -12,7 +12,7 @@ const WorkoutSets = ({ workoutsets }: Props) => {
         </Grid>
 
         <Grid item xs={4}>
-          <WorkoutItems workoutsets={workoutsets} />
+          <ItemModal workoutitems={workoutitems} />
         </Grid>
       </Grid>
     </Container>

@@ -2,23 +2,21 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Box } from '@mui/system';
-import { Props } from '../../pages/user/edit';
 import { Button, Typography } from '@mui/material';
-import { WorkoutItem } from '../../types/workout';
+import { WorkoutSet } from '../../types/workout';
 
-const WorkoutDay = ({ workoutsets }: Props) => {
+type Props = {
+  workoutsets: WorkoutSet[];
+};
+
+const WorkoutDay: React.FC<Props> = ({ workoutsets }: Props) => {
   let getDate = new Date();
-  let today =
-    getDate.getDate() +
-    '/' +
-    (getDate.getMonth() + 1) +
-    '/' +
-    getDate.getFullYear();
+  let today = getDate.getDate() + '/' + (getDate.getMonth() + 1) + '/' + getDate.getFullYear();
   let dayOfWeek = getDate.getDay();
 
   const [dayOfToday, setDayOfToday] = React.useState(dayOfWeek);
 
-  let week: Array<WorkoutItem[]> = [[], [], [], [], [], [], []];
+  let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
 
   workoutsets.sort((a, b) => {
     if (!a.set_order || !b.set_order) {
@@ -66,13 +64,9 @@ const WorkoutDay = ({ workoutsets }: Props) => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={onPrevDayChangeHandler}>
-          {dayOfToday === 0 ? 6 : dayOfToday - 1}
-        </Button>
+        <Button onClick={onPrevDayChangeHandler}>{dayOfToday === 0 ? 6 : dayOfToday - 1}</Button>
         <Typography variant='h4'>{dayOfToday}</Typography>
-        <Button onClick={onNextDayChangeHandler}>
-          {dayOfToday === 6 ? 0 : dayOfToday + 1}
-        </Button>
+        <Button onClick={onNextDayChangeHandler}>{dayOfToday === 6 ? 0 : dayOfToday + 1}</Button>
       </div>
       <Box
         sx={{
@@ -83,9 +77,7 @@ const WorkoutDay = ({ workoutsets }: Props) => {
         }}
       >
         <List sx={{ width: '100%', height: '80vh' }}>
-          {!week[dayOfToday][0].id && (
-            <Typography marginLeft='2em'>No Workouts Are Registered</Typography>
-          )}
+          {!week[dayOfToday][0].id && <Typography marginLeft='2em'>No Workouts Are Registered</Typography>}
 
           {week[dayOfToday] &&
             week[dayOfToday].map(
@@ -110,8 +102,8 @@ const WorkoutDay = ({ workoutsets }: Props) => {
                       }}
                     >
                       <Typography marginLeft='2em'>
-                        {workoutset.set_order}. {workoutset.workout_item}{' '}
-                        {workoutset.reps} * {workoutset.sets}
+                        {workoutset.set_order}. {workoutset.workout_item} {workoutset.reps} *{' '}
+                        {workoutset.sets}
                       </Typography>
                     </Button>
                   </ListItem>

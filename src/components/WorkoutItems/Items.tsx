@@ -1,17 +1,17 @@
 import { Button, List, ListItem } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
+import ItemModal from './ItemModal';
 import useWorkoutItems from './hooks/useWorkoutItems';
 import { State } from './hooks/useWorkoutItems';
 
 type Props = {
   workoutitems: State[];
+  onClickEdit: (userId: any, categoryName: any, name: any, itemId: any) => void;
 };
 
-const WorkoutItems = ({ workoutitems }: Props) => {
-  const [state, handlers] = useWorkoutItems(workoutitems);
+const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
   const [isEditMode, setIsEditMode] = React.useState(false);
-
   return (
     <>
       <Box
@@ -23,7 +23,7 @@ const WorkoutItems = ({ workoutitems }: Props) => {
         }}
       >
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {state.map(
+          {workoutitems.map(
             (workoutitem, i) =>
               workoutitem.workout_item && (
                 <ListItem
@@ -42,6 +42,14 @@ const WorkoutItems = ({ workoutitems }: Props) => {
                       width: '80%',
                       minHeight: '5em',
                     }}
+                    onClick={() =>
+                      onClickEdit(
+                        workoutitem.users_id,
+                        workoutitem.category,
+                        workoutitem.workout_item,
+                        workoutitem.id
+                      )
+                    }
                   >
                     {workoutitem.workout_item}
                   </Button>
