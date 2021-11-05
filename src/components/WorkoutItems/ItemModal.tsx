@@ -14,6 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
+import WorkoutItems from './Items';
 
 type Data = {
   name: string;
@@ -21,23 +23,11 @@ type Data = {
 };
 
 type Props = {
-  usersId: number | null;
-  category?:
-    | 'Warm Up'
-    | 'Arms'
-    | 'Legs'
-    | 'Chest'
-    | 'Abs'
-    | 'Glutes'
-    | 'Back'
-    | 'Shoulders'
-    | 'Upper Body'
-    | 'Lower Body';
-
-  name?: string | null;
+  workoutitems: State[];
 };
 
-const ItemModal = ({ usersId }: Props) => {
+const ItemModal = ({ workoutitems }: Props) => {
+  const [state, handlers] = useWorkoutItems(workoutitems);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -63,6 +53,7 @@ const ItemModal = ({ usersId }: Props) => {
   const [showMessage, setShowMessage] = React.useState(false);
   const [isItemAdded, setIsItemAdded] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(null);
 
   const onNameChangeHandler = (event: string) => {
     setWorkoutName(event);
@@ -71,10 +62,6 @@ const ItemModal = ({ usersId }: Props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-
-    if (isItemAdded) {
-      window.location.reload();
-    }
     setIsItemAdded(false);
     setCategory('');
     setWorkoutName('');
@@ -87,16 +74,29 @@ const ItemModal = ({ usersId }: Props) => {
       name: workoutName,
       category,
     };
-
-    await axios
-      .post('http://localhost:8000/api/workout-items/' + usersId, args)
-      .then((res) => {
+    if (isEdit) {
+      console.log(args.name, args.category);
+      const updateURL = `http://localhost:8000/api/workout-items/${state[0].users_id}/${isEdit}`;
+      const res = await axios.put(updateURL, args);
+      if (res.status === 201) {
+        setCategory('');
+        setWorkoutName('');
+        setIsEdit(null);
+        setOpen(false);
+        handlers.onGetWorkoutItems(state[0].users_id);
+      } else if (res.status === 200) {
+        setMessage(res.data.message);
+      }
+    } else {
+      await axios.post('http://localhost:8000/api/workout-items/' + state[0].users_id, args).then((res) => {
         setMessage(res.data.message);
         setIsItemAdded(true);
         setCategory('');
         setWorkoutName('');
-        setIsLoading(false);
+        handlers.onGetWorkoutItems(state[0].users_id);
       });
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -114,11 +114,20 @@ const ItemModal = ({ usersId }: Props) => {
     setCategory(event.target.value);
   };
 
+  const onClickEdit = React.useCallback(async (userId, categoryName, name, itemId) => {
+    console.log(userId, categoryName, name);
+    setOpen(true);
+    setIsEdit(itemId);
+    setCategory(categoryName);
+    setWorkoutName(name);
+  }, []);
+
   return (
     <div>
       <Button onClick={handleOpen}>
         <AddIcon fontSize='medium' color='primary' />
       </Button>
+      <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
       <Modal
         open={open}
         onClose={handleClose}
@@ -128,18 +137,13 @@ const ItemModal = ({ usersId }: Props) => {
         <>
           <form onSubmit={handleSubmit}>
             <Box sx={style}>
-              {showMessage && (
-                <Typography sx={{ position: 'absolute', top: '8em' }}>
-                  {message}
-                </Typography>
-              )}
+              {showMessage && <Typography sx={{ position: 'absolute', top: '8em' }}>{message}</Typography>}
               <TextField
                 required
                 id='standard-basic'
                 label='EXERCISE NAME'
                 variant='standard'
                 name='name'
-                // error
                 onChange={(e) => onNameChangeHandler(e.target.value)}
                 value={workoutName}
                 autoFocus
@@ -158,21 +162,17 @@ const ItemModal = ({ usersId }: Props) => {
                 >
                   <MenuItem value={'Warm Up'}>Warm Up</MenuItem>
                   <MenuItem value={'Arms'}>Arms</MenuItem>
-                  <MenuItem value={'Legs'}>Legs</MenuItem>{' '}
-                  <MenuItem value={'Chest'}>Chest</MenuItem>{' '}
-                  <MenuItem value={'Abs'}>Abs</MenuItem>{' '}
-                  <MenuItem value={'Glutes'}>Glutes</MenuItem>{' '}
-                  <MenuItem value={'Back'}>Back</MenuItem>{' '}
-                  <MenuItem value={'Shoulders'}>Shoulders</MenuItem>{' '}
+                  <MenuItem value={'Legs'}>Legs</MenuItem> <MenuItem value={'Chest'}>Chest</MenuItem>{' '}
+                  <MenuItem value={'Abs'}>Abs</MenuItem> <MenuItem value={'Glutes'}>Glutes</MenuItem>{' '}
+                  <MenuItem value={'Back'}>Back</MenuItem> <MenuItem value={'Shoulders'}>Shoulders</MenuItem>{' '}
                   <MenuItem value={'Upper Body'}>Upper Body</MenuItem>{' '}
                   <MenuItem value={'Lower Body'}>Lower Body</MenuItem>
                 </Select>
               </FormControl>
-              <div
-                style={{ position: 'absolute', right: '3em', bottom: '2em' }}
-              >
+              <div style={{ position: 'absolute', right: '3em', bottom: '2em' }}>
                 <Stack spacing={2} direction='row'>
                   <Button
+                    name='on-close'
                     variant='outlined'
                     color='secondary'
                     onClick={handleClose}
@@ -181,6 +181,7 @@ const ItemModal = ({ usersId }: Props) => {
                     Close
                   </Button>
                   <Button
+                    name='on-submit'
                     variant='contained'
                     color='secondary'
                     type='submit'

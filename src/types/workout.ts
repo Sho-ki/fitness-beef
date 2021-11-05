@@ -33,9 +33,9 @@ export type WorkoutSet = {
 };
 
 export type WorkoutItem = {
-  id: number;
-  workout_item: string;
-  workout_categories_id: number;
+  id: number | null;
+  workout_item: string | null;
+  workout_categories_id: number | null;
   category:
     | 'Warm Up'
     | 'Arms'
@@ -60,5 +60,5 @@ export type WorkoutItem = {
     | 'orange'
     | 'black'
     | null;
-  users_id: number;
+  users_id: number | null;
 };

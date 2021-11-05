@@ -1,28 +1,23 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-
-import SideMenu from '../../components/SideMenu/User';
-
 import { WorkoutItem, WorkoutSet } from '../../types/workout';
 import WorkoutSets from '../../components/WorkoutSets';
 
 export type Props = {
-  workoutsets: Array<WorkoutSet>;
-  workoutitems: Array<WorkoutItem>;
+  workoutsets: WorkoutSet[];
+  workoutitems: WorkoutItem[];
 };
 
 export const rest = ({ workoutsets, workoutitems }: Props) => {
   return { props: { workoutsets, workoutitems } };
 };
 // This gets called on every request
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const getWorkoutSets = await fetch(`http://localhost:8000/api/workouts/17`);
   const workoutsets: WorkoutSet[] = await getWorkoutSets.json();
 
-  const getWorkoutItems = await fetch(
-    `http://localhost:8000/api/workout-items/17`
-  );
-  const workoutitems: WorkoutSet[] = await getWorkoutItems.json();
+  const getWorkoutItems = await fetch(`http://localhost:8000/api/workout-items/17`);
+  const workoutitems: WorkoutItem[] = await getWorkoutItems.json();
 
   // Pass workoutsets to the page via props
   return { props: { workoutsets, workoutitems } };
