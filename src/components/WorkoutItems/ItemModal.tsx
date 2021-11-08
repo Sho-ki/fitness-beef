@@ -66,7 +66,6 @@ const ItemModal = ({ workoutitems }: Props) => {
     setWorkoutName('');
     setEditItemId(null);
     setMessage(undefined);
-    handlers.onGetWorkoutItems(state[0].users_id);
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -82,6 +81,7 @@ const ItemModal = ({ workoutitems }: Props) => {
       const res = await axios.put(updateURL, args);
       setMessage(res.data.message);
       if (res.status === 201) {
+        handlers.onGetWorkoutItems(state[0].users_id);
         setOpen(false);
       }
     } else {
@@ -90,6 +90,7 @@ const ItemModal = ({ workoutitems }: Props) => {
       setMessage(res.data.message);
 
       if (res.status === 201) {
+        handlers.onGetWorkoutItems(state[0].users_id);
         setCategory('');
         setWorkoutName('');
       }
@@ -154,6 +155,7 @@ const ItemModal = ({ workoutitems }: Props) => {
                 value={workoutName}
                 autoFocus
                 sx={{ width: '50%' }}
+                autoComplete={'off'}
               />
               <FormControl sx={{ width: '45%', marginLeft: '1em' }}>
                 <InputLabel id='demo-simple-select-label'>CATEGORY</InputLabel>

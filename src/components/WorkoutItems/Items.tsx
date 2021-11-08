@@ -11,20 +11,21 @@ type Props = {
 };
 
 const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
-  const [currWorkoutItems, setCurrWorkoutItems] = React.useState(workoutitems);
+  const [searchFilter, setSearchFilter] = React.useState('');
 
   const onSearchHandler = (e: string) => {
-    setCurrWorkoutItems(() => {
-      let arr: State[] = [];
-      workoutitems.filter((currWorkoutItem) => {
-        const item: string | null = currWorkoutItem.workout_item;
-        if (item && item.indexOf(e) >= 0) {
-          arr.push(currWorkoutItem);
-        }
-      });
-      return arr;
-    });
+    setSearchFilter(e);
   };
+
+  const filteredItems = React.useMemo(() => {
+    return workoutitems
+      .sort((a, b) => {
+        return a.id - b.id;
+      })
+      .filter((workoutitem) => {
+        return workoutitem.workout_item && workoutitem.workout_item.indexOf(searchFilter) >= 0;
+      });
+  }, [workoutitems, searchFilter]);
   return (
     <>
       <Box
@@ -45,7 +46,7 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
         />
 
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {currWorkoutItems.map(
+          {filteredItems.map(
             (workoutitem, i) =>
               workoutitem.workout_item && (
                 <ListItem
