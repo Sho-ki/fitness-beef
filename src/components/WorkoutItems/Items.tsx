@@ -23,7 +23,12 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
         return a.id - b.id;
       })
       .filter((workoutitem) => {
-        return workoutitem.workout_item && workoutitem.workout_item.indexOf(searchFilter) >= 0;
+        return (
+          (workoutitem.workout_item &&
+            workoutitem.workout_item.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0) ||
+          (workoutitem.category &&
+            workoutitem.category.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0)
+        );
       });
   }, [workoutitems, searchFilter]);
   return (
