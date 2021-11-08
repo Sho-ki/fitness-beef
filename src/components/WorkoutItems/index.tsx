@@ -1,4 +1,4 @@
-import { Button, List, ListItem } from '@mui/material';
+import { Button, List, ListItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import useWorkoutItems from './hooks/useWorkoutItems';
@@ -10,7 +10,6 @@ type Props = {
 
 const WorkoutItems = ({ workoutitems }: Props) => {
   const [state, handlers] = useWorkoutItems(workoutitems);
-  const [isEditMode, setIsEditMode] = React.useState(false);
 
   return (
     <>
@@ -22,6 +21,14 @@ const WorkoutItems = ({ workoutitems }: Props) => {
           borderRadius: 5,
         }}
       >
+        <Button
+          variant='outlined'
+          sx={{
+            borderRadius: 5,
+            width: '80%',
+            minHeight: '5em',
+          }}
+        ></Button>
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
           {state.map(
             (workoutitem, i) =>

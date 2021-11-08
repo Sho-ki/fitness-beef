@@ -1,4 +1,4 @@
-import { Button, List, ListItem } from '@mui/material';
+import { Button, List, ListItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import ItemModal from './ItemModal';
@@ -11,7 +11,20 @@ type Props = {
 };
 
 const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
-  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [currWorkoutItems, setCurrWorkoutItems] = React.useState(workoutitems);
+
+  const onSearchHandler = (e: string) => {
+    setCurrWorkoutItems(() => {
+      let arr: State[] = [];
+      workoutitems.filter((currWorkoutItem) => {
+        const item: string | null = currWorkoutItem.workout_item;
+        if (item && item.indexOf(e) >= 0) {
+          arr.push(currWorkoutItem);
+        }
+      });
+      return arr;
+    });
+  };
   return (
     <>
       <Box
@@ -20,14 +33,22 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
           width: '100%',
           border: 1,
           borderRadius: 5,
+          textAlign: 'center',
         }}
       >
+        <TextField
+          placeholder='search'
+          id='outlined-size-small'
+          size='small'
+          sx={{ margin: '1em 0 0.5em 0' }}
+          onChange={(e) => onSearchHandler(e.target.value)}
+        />
+
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {workoutitems.map(
+          {currWorkoutItems.map(
             (workoutitem, i) =>
               workoutitem.workout_item && (
                 <ListItem
-                  alignItems='center'
                   sx={{
                     width: '100%',
                     textAlign: 'center',

@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -28,7 +29,6 @@ type Props = {
 
 const ItemModal = ({ workoutitems }: Props) => {
   const [state, handlers] = useWorkoutItems(workoutitems);
-  console.log(state, handlers);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -122,10 +122,18 @@ const ItemModal = ({ workoutitems }: Props) => {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <AddIcon fontSize='medium' color='primary' />
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
+        <p>dwdw</p>
+      </div>
       <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button onClick={handleOpen}>
+          <AddIcon fontSize='medium' color='primary' />
+        </Button>
+        <Button onClick={handleOpen}>
+          <DeleteIcon fontSize='medium' color='primary' />
+        </Button>
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
