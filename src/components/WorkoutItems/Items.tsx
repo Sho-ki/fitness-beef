@@ -1,4 +1,4 @@
-import { Button, List, ListItem } from '@mui/material';
+import { Button, List, ListItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import ItemModal from './ItemModal';
@@ -11,7 +11,26 @@ type Props = {
 };
 
 const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
-  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [searchFilter, setSearchFilter] = React.useState('');
+
+  const onSearchHandler = (e: string) => {
+    setSearchFilter(e);
+  };
+
+  const filteredItems = React.useMemo(() => {
+    return workoutitems
+      .sort((a, b) => {
+        return a.id - b.id;
+      })
+      .filter((workoutitem) => {
+        return (
+          (workoutitem.workout_item &&
+            workoutitem.workout_item.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0) ||
+          (workoutitem.category &&
+            workoutitem.category.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0)
+        );
+      });
+  }, [workoutitems, searchFilter]);
   return (
     <>
       <Box
@@ -20,14 +39,22 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
           width: '100%',
           border: 1,
           borderRadius: 5,
+          textAlign: 'center',
         }}
       >
+        <TextField
+          placeholder='search'
+          id='outlined-size-small'
+          size='small'
+          sx={{ margin: '1em 0 0.5em 0' }}
+          onChange={(e) => onSearchHandler(e.target.value)}
+        />
+
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {workoutitems.map(
+          {filteredItems.map(
             (workoutitem, i) =>
               workoutitem.workout_item && (
                 <ListItem
-                  alignItems='center'
                   sx={{
                     width: '100%',
                     textAlign: 'center',

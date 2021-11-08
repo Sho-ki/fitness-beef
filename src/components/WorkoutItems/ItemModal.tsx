@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -51,9 +52,8 @@ const ItemModal = ({ workoutitems }: Props) => {
   const [category, setCategory] = React.useState('');
   const [message, setMessage] = React.useState();
   const [showMessage, setShowMessage] = React.useState(false);
-  const [isItemAdded, setIsItemAdded] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isEdit, setIsEdit] = React.useState(null);
+  const [editItemId, setEditItemId] = React.useState(null);
 
   const onNameChangeHandler = (event: string) => {
     setWorkoutName(event);
@@ -62,40 +62,40 @@ const ItemModal = ({ workoutitems }: Props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setIsItemAdded(false);
     setCategory('');
     setWorkoutName('');
+    setEditItemId(null);
+    setMessage(undefined);
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setMessage(undefined);
     setIsLoading(true);
     const args: Data = {
       name: workoutName,
       category,
     };
-    if (isEdit) {
-      console.log(args.name, args.category);
-      const updateURL = `http://localhost:8000/api/workout-items/${state[0].users_id}/${isEdit}`;
+    if (editItemId) {
+      const updateURL = `http://localhost:8000/api/workout-items/${state[0].users_id}/${editItemId}`;
       const res = await axios.put(updateURL, args);
+      setMessage(res.data.message);
       if (res.status === 201) {
-        setCategory('');
-        setWorkoutName('');
-        setIsEdit(null);
-        setOpen(false);
         handlers.onGetWorkoutItems(state[0].users_id);
-      } else if (res.status === 200) {
-        setMessage(res.data.message);
+        setOpen(false);
       }
     } else {
-      await axios.post('http://localhost:8000/api/workout-items/' + state[0].users_id, args).then((res) => {
-        setMessage(res.data.message);
-        setIsItemAdded(true);
+      const insertURL = `http://localhost:8000/api/workout-items/${state[0].users_id}`;
+      const res = await axios.post(insertURL, args);
+      setMessage(res.data.message);
+
+      if (res.status === 201) {
+        handlers.onGetWorkoutItems(state[0].users_id);
         setCategory('');
         setWorkoutName('');
-        handlers.onGetWorkoutItems(state[0].users_id);
-      });
+      }
     }
+
     setIsLoading(false);
   };
 
@@ -115,19 +115,26 @@ const ItemModal = ({ workoutitems }: Props) => {
   };
 
   const onClickEdit = React.useCallback(async (userId, categoryName, name, itemId) => {
-    console.log(userId, categoryName, name);
     setOpen(true);
-    setIsEdit(itemId);
+    setEditItemId(itemId);
     setCategory(categoryName);
     setWorkoutName(name);
   }, []);
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <AddIcon fontSize='medium' color='primary' />
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
+        <p>dwdw</p>
+      </div>
       <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button onClick={handleOpen}>
+          <AddIcon fontSize='medium' color='primary' />
+        </Button>
+        <Button onClick={handleOpen}>
+          <DeleteIcon fontSize='medium' color='primary' />
+        </Button>
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -148,6 +155,7 @@ const ItemModal = ({ workoutitems }: Props) => {
                 value={workoutName}
                 autoFocus
                 sx={{ width: '50%' }}
+                autoComplete={'off'}
               />
               <FormControl sx={{ width: '45%', marginLeft: '1em' }}>
                 <InputLabel id='demo-simple-select-label'>CATEGORY</InputLabel>

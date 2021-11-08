@@ -10,7 +10,7 @@ const getWorkoutItems = async (userId: number | null) => {
 };
 
 export type State = {
-  id: number | null;
+  id: number;
   workout_item: string | null;
   workout_categories_id: number | null;
   category:

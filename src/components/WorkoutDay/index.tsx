@@ -63,7 +63,7 @@ const WorkoutDay: React.FC<Props> = ({ workoutsets }: Props) => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
         <Button onClick={onPrevDayChangeHandler}>{dayOfToday === 0 ? 6 : dayOfToday - 1}</Button>
         <Typography variant='h4'>{dayOfToday}</Typography>
         <Button onClick={onNextDayChangeHandler}>{dayOfToday === 6 ? 0 : dayOfToday + 1}</Button>
