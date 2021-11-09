@@ -1,7 +1,7 @@
 import React from 'react';
 import { Radio } from '@mui/material';
 
-import { CategoryColor, Colors } from '../../types/workout';
+import { Colors } from '../../types/workout';
 
 type Props = {
   checked: boolean;

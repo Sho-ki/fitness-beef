@@ -22,7 +22,6 @@ import useWorkoutItems from './hooks/useWorkoutItems';
 import useCategoryColorPair from './hooks/useCategoryColorPairs';
 import { WorkoutItem } from '../../types/workout';
 import { CategoryColor } from '../../types/workout';
-import { CollectionsOutlined } from '@mui/icons-material';
 
 type Data = {
   name: string;

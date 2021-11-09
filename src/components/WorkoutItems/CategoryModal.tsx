@@ -1,12 +1,7 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
+import { Button, Dialog, DialogTitle, DialogActions, IconButton, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Divider } from '@mui/material';
 
 import { CategoryColor } from '../../types/workout';
 import CategoryModalBody from './CategoryModalBody';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { DialogActions, Button } from '@mui/material';
 
 import { CategoryColor, Categories, Colors } from '../../types/workout';
 import CategoryColorRadioGroup from './RadioGroup';
