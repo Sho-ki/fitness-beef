@@ -3,9 +3,10 @@ import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import useWorkoutItems from './hooks/useWorkoutItems';
 import { State } from './hooks/useWorkoutItems';
+import { WorkoutItem } from '../../types/workout';
 
 type Props = {
-  workoutitems: State[];
+  workoutitems: WorkoutItem[];
 };
 
 const WorkoutItems = ({ workoutitems }: Props) => {

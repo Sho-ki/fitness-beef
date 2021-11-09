@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 
+import { WorkoutItem } from '../../../types/workout';
+
 const getWorkoutItems = async (userId: number | null) => {
   const url = `http://localhost:8000/api/workout-items/${userId}`;
   const res = await axios.get(url);
@@ -9,42 +11,13 @@ const getWorkoutItems = async (userId: number | null) => {
   }
 };
 
-export type State = {
-  id: number;
-  workout_item: string | null;
-  workout_categories_id: number | null;
-  category:
-    | 'Warm Up'
-    | 'Arms'
-    | 'Legs'
-    | 'Chest'
-    | 'Abs'
-    | 'Glutes'
-    | 'Back'
-    | 'Shoulders'
-    | 'Upper Body'
-    | 'Lower Body'
-    | null;
-  color:
-    | 'gray'
-    | 'blue'
-    | 'darkblue'
-    | 'green'
-    | 'darkgreen'
-    | 'purple'
-    | 'red'
-    | 'pink'
-    | 'orange'
-    | 'black'
-    | null;
-  users_id: number | null;
-};
+export type State = WorkoutItem;
 
 export type Handlers = {
   onGetWorkoutItems: (userId: number | null) => void;
 };
 
-const useWorkoutItems = (initialState: State[]): [State[], Handlers] => {
+const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
   const [state, setWorkoutItems] = React.useState(initialState);
 
   const onGetWorkoutItems = React.useCallback(async (userId: number | null) => {

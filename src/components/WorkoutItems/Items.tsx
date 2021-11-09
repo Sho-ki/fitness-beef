@@ -4,9 +4,10 @@ import React, { useEffect } from 'react';
 import ItemModal from './ItemModal';
 import useWorkoutItems from './hooks/useWorkoutItems';
 import { State } from './hooks/useWorkoutItems';
+import { WorkoutItem } from '../../types/workout';
 
 type Props = {
-  workoutitems: State[];
+  workoutitems: WorkoutItem[];
   onClickEdit: (userId: any, categoryName: any, name: any, itemId: any) => void;
 };
 
@@ -25,9 +26,13 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
       .filter((workoutitem) => {
         return (
           (workoutitem.workout_item &&
-            workoutitem.workout_item.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0) ||
+            workoutitem.workout_item
+              .toLowerCase()
+              .indexOf(searchFilter.toLowerCase()) >= 0) ||
           (workoutitem.category &&
-            workoutitem.category.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0)
+            workoutitem.category
+              .toLowerCase()
+              .indexOf(searchFilter.toLowerCase()) >= 0)
         );
       });
   }, [workoutitems, searchFilter]);
