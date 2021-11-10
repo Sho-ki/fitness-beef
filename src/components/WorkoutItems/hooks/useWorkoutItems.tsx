@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const getWorkoutItems = async (userId: number | null) => {
   const url = `http://localhost:8000/api/workout-items/${userId}`;
@@ -46,7 +46,9 @@ export type Handlers = {
 
 const useWorkoutItems = (initialState: State[]): [State[], Handlers] => {
   const [state, setWorkoutItems] = React.useState(initialState);
-
+  useEffect(() => {
+    setWorkoutItems(initialState);
+  }, [initialState]);
   const onGetWorkoutItems = React.useCallback(async (userId: number | null) => {
     setWorkoutItems(await getWorkoutItems(userId));
   }, []);

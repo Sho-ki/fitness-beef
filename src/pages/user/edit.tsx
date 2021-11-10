@@ -1,7 +1,10 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { WorkoutItem, WorkoutSet } from '../../types/workout';
-import WorkoutSets from '../../components/WorkoutSets';
+// import WorkoutSets from '../../components/WorkoutSets';
+import { resetServerContext } from 'react-beautiful-dnd';
+import dynamic from 'next/dynamic';
+const WorkoutSets = dynamic(import('../../components/WorkoutSets'), { ssr: false });
 
 export type Props = {
   workoutsets: WorkoutSet[];
@@ -13,6 +16,7 @@ export const rest = ({ workoutsets, workoutitems }: Props) => {
 };
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  resetServerContext();
   const getWorkoutSets = await fetch(`http://localhost:8000/api/workouts/17`);
   const workoutsets: WorkoutSet[] = await getWorkoutSets.json();
 

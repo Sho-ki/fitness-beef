@@ -17,6 +17,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
 import WorkoutItems from './Items';
+import { Droppable } from 'react-beautiful-dnd';
 
 type Data = {
   name: string;
@@ -24,11 +25,11 @@ type Data = {
 };
 
 type Props = {
-  workoutitems: State[];
+  state: State[];
+  handlers: Handlers;
 };
 
-const ItemModal = ({ workoutitems }: Props) => {
-  const [state, handlers] = useWorkoutItems(workoutitems);
+const ItemModal = ({ state, handlers }: Props) => {
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -131,9 +132,14 @@ const ItemModal = ({ workoutitems }: Props) => {
         <Button onClick={handleOpen}>
           <AddIcon fontSize='medium' color='primary' />
         </Button>
-        <Button onClick={handleOpen}>
-          <DeleteIcon fontSize='medium' color='primary' />
-        </Button>
+
+        <Droppable droppableId='deleteList'>
+          {(provided) => (
+            <Button onClick={handleOpen} {...provided.droppableProps} ref={provided.innerRef}>
+              <DeleteIcon fontSize='medium' color='primary' />
+            </Button>
+          )}
+        </Droppable>
       </div>
       <Modal
         open={open}
@@ -170,10 +176,10 @@ const ItemModal = ({ workoutitems }: Props) => {
                 >
                   <MenuItem value={'Warm Up'}>Warm Up</MenuItem>
                   <MenuItem value={'Arms'}>Arms</MenuItem>
-                  <MenuItem value={'Legs'}>Legs</MenuItem> <MenuItem value={'Chest'}>Chest</MenuItem>{' '}
-                  <MenuItem value={'Abs'}>Abs</MenuItem> <MenuItem value={'Glutes'}>Glutes</MenuItem>{' '}
-                  <MenuItem value={'Back'}>Back</MenuItem> <MenuItem value={'Shoulders'}>Shoulders</MenuItem>{' '}
-                  <MenuItem value={'Upper Body'}>Upper Body</MenuItem>{' '}
+                  <MenuItem value={'Legs'}>Legs</MenuItem> <MenuItem value={'Chest'}>Chest</MenuItem>
+                  <MenuItem value={'Abs'}>Abs</MenuItem> <MenuItem value={'Glutes'}>Glutes</MenuItem>
+                  <MenuItem value={'Back'}>Back</MenuItem> <MenuItem value={'Shoulders'}>Shoulders</MenuItem>
+                  <MenuItem value={'Upper Body'}>Upper Body</MenuItem>
                   <MenuItem value={'Lower Body'}>Lower Body</MenuItem>
                 </Select>
               </FormControl>
@@ -182,7 +188,7 @@ const ItemModal = ({ workoutitems }: Props) => {
                   <Button
                     name='on-close'
                     variant='outlined'
-                    color='secondary'
+                    color='primary'
                     onClick={handleClose}
                     disabled={isLoading}
                   >
@@ -191,7 +197,7 @@ const ItemModal = ({ workoutitems }: Props) => {
                   <Button
                     name='on-submit'
                     variant='contained'
-                    color='secondary'
+                    color='primary'
                     type='submit'
                     disabled={isLoading}
                   >

@@ -1,9 +1,9 @@
 import { Button, List, ListItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
-import ItemModal from './ItemModal';
-import useWorkoutItems from './hooks/useWorkoutItems';
+import React from 'react';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { State } from './hooks/useWorkoutItems';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 type Props = {
   workoutitems: State[];
@@ -50,40 +50,62 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
           onChange={(e) => onSearchHandler(e.target.value)}
         />
 
-        <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {filteredItems.map(
-            (workoutitem, i) =>
-              workoutitem.workout_item && (
-                <ListItem
-                  sx={{
-                    width: '100%',
-                    textAlign: 'center',
-                    display: 'block',
-                  }}
-                  key={workoutitem.id}
-                >
-                  <Button
-                    variant='outlined'
-                    sx={{
-                      borderRadius: 5,
-                      width: '80%',
-                      minHeight: '5em',
-                    }}
-                    onClick={() =>
-                      onClickEdit(
-                        workoutitem.users_id,
-                        workoutitem.category,
-                        workoutitem.workout_item,
-                        workoutitem.id
-                      )
-                    }
-                  >
-                    {workoutitem.workout_item}
-                  </Button>
-                </ListItem>
-              )
+        <Droppable droppableId='workoutItems'>
+          {(provided) => (
+            <List
+              sx={{ width: '100%', height: '70vh', overflow: 'scroll' }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {filteredItems.map(
+                (workoutitem, idx) =>
+                  workoutitem.workout_item && (
+                    <Draggable
+                      draggableId={JSON.stringify({
+                        workoutitem: workoutitem,
+                      })}
+                      index={idx}
+                      key={workoutitem.id}
+                    >
+                      {(provided) => (
+                        <ListItem
+                          sx={{
+                            width: '100%',
+                            textAlign: 'center',
+                            display: 'block',
+                          }}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <DragIndicatorIcon />
+                          <Button
+                            variant='outlined'
+                            style={{
+                              borderRadius: 20,
+                              width: '80%',
+                              minHeight: '4em',
+                            }}
+                            onClick={() =>
+                              onClickEdit(
+                                workoutitem.users_id,
+                                workoutitem.category,
+                                workoutitem.workout_item,
+                                workoutitem.id
+                              )
+                            }
+                          >
+                            {workoutitem.workout_item}
+                          </Button>
+                        </ListItem>
+                      )}
+                    </Draggable>
+                  )
+              )}
+              {provided.placeholder}
+            </List>
           )}
-        </List>
+        </Droppable>
       </Box>
     </>
   );

@@ -1,7 +1,7 @@
 export type WorkoutSet = {
   id: number | null;
-  day_of_week: 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | null;
-  users_id: number | null;
+  day_of_week: DayOfWeek;
+  users_id: number;
   set_order: number | null;
   reps: number | null;
   sets: number | null;
@@ -30,6 +30,7 @@ export type WorkoutSet = {
     | 'orange'
     | 'black'
     | null;
+  tempId?: number;
 };
 
 export type WorkoutItem = {
@@ -62,3 +63,14 @@ export type WorkoutItem = {
     | null;
   users_id: number | null;
 };
+
+export enum DayOfWeek {
+  Sun = 'Sun',
+  Mon = 'Mon',
+  Tue = 'Tue',
+  Wed = 'Wed',
+  Thu = 'Thu',
+  Fri = 'Fri',
+  Sat = 'Sat',
+  null = 'null',
+}
