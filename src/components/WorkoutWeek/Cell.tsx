@@ -28,9 +28,7 @@ const Cell = ({ schedules }: Data) => {
     Sat: [],
   };
 
-  schedules.sort((a, b) =>
-    a.order > b.order ? 1 : a.order < b.order ? -1 : 0
-  );
+  schedules.sort((a, b) => (a.order > b.order ? 1 : a.order < b.order ? -1 : 0));
   schedules.map((schedule) => {
     arrangedData[schedule.workoutDayOfWeek].push(schedule);
   });
@@ -51,7 +49,6 @@ const Cell = ({ schedules }: Data) => {
             }}
           >
             {schedule}
-            {console.log(arrangedData[schedule].length)}
             {arrangedData[schedule].length > 0 ? (
               arrangedData[schedule].map((item) => (
                 <Card
@@ -60,11 +57,7 @@ const Cell = ({ schedules }: Data) => {
                   sx={{ minHeight: 100, backgroundColor: item.color }}
                 >
                   <CardContent>
-                    <Typography
-                      sx={{ fontSize: 12, textAlign: 'left' }}
-                      color='text.secondary'
-                      gutterBottom
-                    >
+                    <Typography sx={{ fontSize: 12, textAlign: 'left' }} color='text.secondary' gutterBottom>
                       {item.workoutCategory}
                     </Typography>
                     <Typography

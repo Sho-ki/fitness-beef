@@ -36,7 +36,6 @@ type Props = {
 const ItemModal = ({ workoutitems, categorycolor }: Props) => {
   const [state, handlers] = useWorkoutItems(workoutitems);
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
-  console.log('categoryColor', categoryColor);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
