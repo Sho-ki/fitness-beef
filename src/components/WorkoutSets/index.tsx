@@ -1,7 +1,7 @@
 import { Container, Grid } from '@mui/material';
-import { Props } from '../../pages/user/edit';
 import WorkoutDay from '../WorkoutDay';
 import ItemModal from '../WorkoutItems/ItemModal';
+import { CategoryColor, WorkoutItem } from '../../types/workout';
 
 import { Typography } from '@material-ui/core';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
@@ -10,7 +10,13 @@ import { WorkoutSet, DayOfWeek } from '../../types/workout';
 import useWorkoutItems from '../WorkoutItems/hooks/useWorkoutItems';
 import axios from 'axios';
 
-const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
+type Props = {
+  workoutsets: WorkoutSet[];
+  workoutitems: WorkoutItem[];
+  categorycolor: CategoryColor[];
+};
+
+const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor }: Props) => {
   let getDate = new Date();
   let today = getDate.getMonth() + 1 + ' / ' + getDate.getDate() + ' / ' + getDate.getFullYear();
   const [state, handlers] = useWorkoutItems(workoutitems);
@@ -33,31 +39,24 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
   workoutsets.map((workoutset, i) => {
     switch (workoutset.day_of_week) {
       case DayOfWeek.Sun:
-        workoutset.tempId = i;
         week[0].push(workoutset);
         break;
       case DayOfWeek.Mon:
-        workoutset.tempId = i;
         week[1].push(workoutset);
         break;
       case DayOfWeek.Tue:
-        workoutset.tempId = i;
         week[2].push(workoutset);
         break;
       case DayOfWeek.Wed:
-        workoutset.tempId = i;
         week[3].push(workoutset);
         break;
       case DayOfWeek.Thu:
-        workoutset.tempId = i;
         week[4].push(workoutset);
         break;
       case DayOfWeek.Fri:
-        workoutset.tempId = i;
         week[5].push(workoutset);
         break;
       case DayOfWeek.Sat:
-        workoutset.tempId = i;
         week[6].push(workoutset);
         break;
       default:
@@ -164,7 +163,12 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
             />
           </Grid>
           <Grid item xs={4}>
-            <ItemModal state={state} handlers={handlers} />
+            <ItemModal
+              workoutitems={state}
+              onDeleteWorkoutItem={handlers.onDeleteWorkoutItem}
+              onGetWorkoutItems={handlers.onGetWorkoutItems}
+              categorycolor={categorycolor}
+            />
           </Grid>
         </Grid>
       </DragDropContext>

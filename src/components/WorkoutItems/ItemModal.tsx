@@ -12,12 +12,17 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
+import { Box } from '@mui/system';
+
+import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
 import { Droppable } from 'react-beautiful-dnd';
+import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
+import useCategoryColorPair from './hooks/useCategoryColorPairs';
+import { WorkoutItem } from '../../types/workout';
+import { CategoryColor } from '../../types/workout';
 
 export type Data = {
   name: string;
@@ -25,11 +30,14 @@ export type Data = {
 };
 
 type Props = {
-  state: State[];
-  handlers: Handlers;
+  workoutitems: State[];
+  onGetWorkoutItems: (userId: number | null) => void;
+  onDeleteWorkoutItem: (workoutItemId: number) => void;
+  categorycolor: CategoryColor[];
 };
 
-const ItemModal = ({ state, handlers }: Props) => {
+const ItemModal = ({ workoutitems, onGetWorkoutItems, onDeleteWorkoutItem, categorycolor }: Props) => {
+  const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -78,20 +86,20 @@ const ItemModal = ({ state, handlers }: Props) => {
       category,
     };
     if (editItemId) {
-      const updateURL = `http://localhost:8000/api/workout-items/${state[0].users_id}/${editItemId}`;
+      const updateURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}/${editItemId}`;
       const res = await axios.put(updateURL, args);
       setMessage(res.data.message);
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(state[0].users_id);
+        onGetWorkoutItems(workoutitems[0].users_id);
         setOpen(false);
       }
     } else {
-      const insertURL = `http://localhost:8000/api/workout-items/${state[0].users_id}`;
+      const insertURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}`;
       const res = await axios.post(insertURL, args);
       setMessage(res.data.message);
 
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(state[0].users_id);
+        onGetWorkoutItems(workoutitems[0].users_id);
         setCategory('');
         setWorkoutName('');
       }
@@ -124,10 +132,20 @@ const ItemModal = ({ state, handlers }: Props) => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
-        <p>dwdw</p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          minHeight: '7em',
+          alignItems: 'end',
+        }}
+      >
+        <CustomizedDialogs
+          categorycolor={categoryColor}
+          onUpdateCategoryColorPair={categorycolorHandlers.onUpdateCategoryColorPair}
+        />
       </div>
-      <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
+      <WorkoutItems workoutitems={workoutitems} onClickEdit={onClickEdit} />
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={handleOpen}>
           <AddIcon fontSize='medium' color='primary' />

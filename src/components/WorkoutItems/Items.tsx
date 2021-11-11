@@ -4,9 +4,10 @@ import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { State } from './hooks/useWorkoutItems';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { WorkoutItem } from '../../types/workout';
 
 type Props = {
-  workoutitems: State[];
+  workoutitems: WorkoutItem[];
   onClickEdit: (userId: any, categoryName: any, name: any, itemId: any) => void;
 };
 
