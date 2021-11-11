@@ -19,7 +19,7 @@ import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
 import WorkoutItems from './Items';
 import { Droppable } from 'react-beautiful-dnd';
 
-type Data = {
+export type Data = {
   name: string;
   category: string;
 };

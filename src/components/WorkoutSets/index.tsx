@@ -74,7 +74,6 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
   };
 
   const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
-  const [workoutItems, setWorkoutItems] = React.useState(workoutitems);
   const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
 
   const onDragEnd = async (result: DropResult) => {
@@ -91,7 +90,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
     }
 
     const setItems = Array.from(orderChangedWeek[dayOfToday]);
-    const items = Array.from(workoutItems);
+    // const items = Array.from(workoutItems);
     if (destination.droppableId === 'workoutSetItems' && source.droppableId === 'workoutSetItems') {
       const [reorderedItem] = setItems.splice(result.source.index, 1);
       setItems.splice(destination.index, 0, reorderedItem);
@@ -100,31 +99,39 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
       return;
     }
 
-    const newItemInfo = JSON.parse(result.draggableId).workoutitem;
+    const passedItemInfo = JSON.parse(draggableId).workoutitem;
     if (source.droppableId === 'workoutItems' && destination.droppableId === 'deleteList') {
-      let result = window.confirm(`Delete ${newItemInfo.workout_item}(${newItemInfo.category})?`);
+      let result = window.confirm(`Delete ${passedItemInfo.workout_item}(${passedItemInfo.category})?`);
       if (!result) return;
 
-      const deleteURL = `http://localhost:8000/api/workout-items/${newItemInfo.id}`;
-      const res = await axios.delete(deleteURL);
+      state.splice(source.index, 1);
+      handlers.onDeleteWorkoutItem(passedItemInfo.id);
 
-      items.splice(source.index, 1);
+      handlers.onGetWorkoutItems(state[0].users_id);
 
-      setWorkoutItems(items);
+      let updatedWeek = orderChangedWeek.map((eachWeek) => {
+        return eachWeek.filter((item) => {
+          return item.workout_item_id !== passedItemInfo.id;
+        });
+      });
+
+      setOrderChangedWeek(updatedWeek);
+
       return;
     }
 
     const newItemIdx = source.index;
     const newItem = {
-      workout_item: newItemInfo.workout_item,
-      category: newItemInfo.category,
-      color: newItemInfo.color,
+      workout_item: passedItemInfo.workout_item,
+      category: passedItemInfo.category,
+      color: passedItemInfo.color,
       day_of_week: DayOfWeek.Tue,
+      workout_item_id: passedItemInfo.id,
       id: null,
       reps: 12,
       set_order: newItemIdx,
       sets: 3,
-      users_id: newItemInfo.users_id,
+      users_id: passedItemInfo.users_id,
     };
     if (!orderChangedWeek[dayOfToday][0].workout_item) {
       setOrderChangedWeek((prev) => {
@@ -142,6 +149,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
     setOrderChangedWeek(orderChangedWeek);
   };
 
+  console.log(week);
   return (
     <Container>
       <Typography>{today}</Typography>
@@ -156,7 +164,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
             />
           </Grid>
           <Grid item xs={4}>
-            <ItemModal state={workoutItems} handlers={handlers} />
+            <ItemModal state={state} handlers={handlers} />
           </Grid>
         </Grid>
       </DragDropContext>

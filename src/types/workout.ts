@@ -6,6 +6,7 @@ export type WorkoutSet = {
   reps: number | null;
   sets: number | null;
   workout_item: string | null;
+  workout_item_id: number | null;
   category:
     | 'Warm Up'
     | 'Arms'
