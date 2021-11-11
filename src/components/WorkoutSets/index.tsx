@@ -1,9 +1,20 @@
 import { Container, Grid } from '@mui/material';
-import { Props } from '../../pages/user/edit';
 import WorkoutDay from '../WorkoutDay';
 import ItemModal from '../WorkoutItems/ItemModal';
+import { WorkoutItem, WorkoutSet } from '../../types/workout';
+import { CategoryColor } from '../../types/workout';
 
-const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
+type Props = {
+  workoutsets: WorkoutSet[];
+  workoutitems: WorkoutItem[];
+  categorycolor: CategoryColor[];
+};
+
+const WorkoutSets: React.FC<Props> = ({
+  workoutsets,
+  workoutitems,
+  categorycolor,
+}: Props) => {
   return (
     <Container>
       <Grid container spacing={2}>
@@ -12,7 +23,10 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems }: Props) => {
         </Grid>
 
         <Grid item xs={4}>
-          <ItemModal workoutitems={workoutitems} />
+          <ItemModal
+            workoutitems={workoutitems}
+            categorycolor={categorycolor}
+          />
         </Grid>
       </Grid>
     </Container>

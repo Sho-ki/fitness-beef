@@ -3,9 +3,12 @@ import { GetServerSideProps } from 'next';
 import { WorkoutItem, WorkoutSet } from '../../types/workout';
 import WorkoutSets from '../../components/WorkoutSets';
 
+import { CategoryColor } from '../../types/workout';
+
 export type Props = {
   workoutsets: WorkoutSet[];
   workoutitems: WorkoutItem[];
+  categorycolor: CategoryColor[];
 };
 
 export const rest = ({ workoutsets, workoutitems }: Props) => {
@@ -19,8 +22,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const getWorkoutItems = await fetch(`http://localhost:8000/api/workout-items/17`);
   const workoutitems: WorkoutItem[] = await getWorkoutItems.json();
 
+  const getCategoryColorPair = await fetch(`http://localhost:8000/api/categories/17`);
+  const categorycolor = await getCategoryColorPair.json();
+
   // Pass workoutsets to the page via props
-  return { props: { workoutsets, workoutitems } };
+  return { props: { workoutsets, workoutitems, categorycolor } };
 };
 // const testWorkoutData: WorkoutSet[] = [
 //   {
@@ -135,10 +141,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
 //   },
 // ];
 
-const Edit = ({ workoutsets, workoutitems }: Props) => {
+const Edit = ({ workoutsets, workoutitems, categorycolor }: Props) => {
   return (
     <>
-      <WorkoutSets workoutsets={workoutsets} workoutitems={workoutitems} />
+      <WorkoutSets workoutsets={workoutsets} workoutitems={workoutitems} categorycolor={categorycolor} />
       {/* <WorkoutSets workoutsets={testWorkoutData} /> */}
     </>
   );

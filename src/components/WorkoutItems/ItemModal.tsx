@@ -12,11 +12,16 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
+import { Box } from '@mui/system';
+
+import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
+import useWorkoutItems from './hooks/useWorkoutItems';
+import useCategoryColorPair from './hooks/useCategoryColorPairs';
+import { WorkoutItem } from '../../types/workout';
+import { CategoryColor } from '../../types/workout';
 
 type Data = {
   name: string;
@@ -24,11 +29,13 @@ type Data = {
 };
 
 type Props = {
-  workoutitems: State[];
+  workoutitems: WorkoutItem[];
+  categorycolor: CategoryColor[];
 };
 
-const ItemModal = ({ workoutitems }: Props) => {
+const ItemModal = ({ workoutitems, categorycolor }: Props) => {
   const [state, handlers] = useWorkoutItems(workoutitems);
+  const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -123,8 +130,18 @@ const ItemModal = ({ workoutitems }: Props) => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
-        <p>dwdw</p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          minHeight: '7em',
+          alignItems: 'end',
+        }}
+      >
+        <CustomizedDialogs
+          categorycolor={categoryColor}
+          onUpdateCategoryColorPair={categorycolorHandlers.onUpdateCategoryColorPair}
+        />
       </div>
       <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>

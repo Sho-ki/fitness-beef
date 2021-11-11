@@ -6,59 +6,46 @@ export type WorkoutSet = {
   reps: number | null;
   sets: number | null;
   workout_item: string | null;
-  category:
-    | 'Warm Up'
-    | 'Arms'
-    | 'Legs'
-    | 'Chest'
-    | 'Abs'
-    | 'Glutes'
-    | 'Back'
-    | 'Shoulders'
-    | 'Upper Body'
-    | 'Lower Body'
-    | null;
-  color:
-    | 'gray'
-    | 'blue'
-    | 'darkblue'
-    | 'green'
-    | 'darkgreen'
-    | 'purple'
-    | 'red'
-    | 'pink'
-    | 'orange'
-    | 'black'
-    | null;
+  category: Categories;
+  color: Colors;
 };
 
 export type WorkoutItem = {
   id: number;
   workout_item: string | null;
   workout_categories_id: number | null;
-  category:
-    | 'Warm Up'
-    | 'Arms'
-    | 'Legs'
-    | 'Chest'
-    | 'Abs'
-    | 'Glutes'
-    | 'Back'
-    | 'Shoulders'
-    | 'Upper Body'
-    | 'Lower Body'
-    | null;
-  color:
-    | 'gray'
-    | 'blue'
-    | 'darkblue'
-    | 'green'
-    | 'darkgreen'
-    | 'purple'
-    | 'red'
-    | 'pink'
-    | 'orange'
-    | 'black'
-    | null;
+  category: Categories;
+  color: Colors;
   users_id: number | null;
 };
+
+export enum Categories {
+  'Warm Up' = "WarmUp", 
+  'Arms' = "Arms", 
+  'Legs' = "Legs",
+  'Chest' = "Chest",
+  'Abs' = "Abs",
+  'Glutes' = "Glutes",
+  'Back' = "Back",
+  'Shoulders' = "Shoulders",
+  'Upper Body' = "UpperBody",
+  'Lower Body' = "LowerBody",
+  null = 'null'
+}
+export enum Colors {
+  'gray' = 'gray',
+  'blue' = 'blue',
+  'darkblue' = 'darkblue',
+  'green' = 'green',
+  'darkgreen' = 'darkgreen',
+  'purple' = 'purple',
+  'red' = 'red',
+  'pink' = 'pink',
+  'orange' = 'orange',
+  'black' = 'black'
+}
+
+export type CategoryColor = {
+  category: Categories;
+  color: Colors;
+}
