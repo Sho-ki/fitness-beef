@@ -18,7 +18,7 @@ export const rest = ({ workoutsets, workoutitems }: Props) => {
   return { props: { workoutsets, workoutitems } };
 };
 // This gets called on every request
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   resetServerContext();
   const getWorkoutSets = await fetch(`http://localhost:8000/api/workouts/17`);
   const workoutsets: WorkoutSet[] = await getWorkoutSets.json();

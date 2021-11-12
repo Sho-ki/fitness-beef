@@ -5,6 +5,7 @@ import { Button, Typography } from '@mui/material';
 import { WorkoutSet } from '../../types/workout';
 import { Droppable } from 'react-beautiful-dnd';
 import SetItem from './SetItem';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 type Props = {
   week: Array<WorkoutSet[]>;
@@ -21,7 +22,7 @@ const WorkoutDay: React.FC<Props> = ({
 }: Props) => {
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '7em', alignItems: 'end' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '5em', alignItems: 'end' }}>
         <Button onClick={onPrevDayChangeHandler}>{dayOfToday === 0 ? 6 : dayOfToday - 1}</Button>
         <Typography variant='h4'>{dayOfToday}</Typography>
         <Button onClick={onNextDayChangeHandler}>{dayOfToday === 6 ? 0 : dayOfToday + 1}</Button>
@@ -52,6 +53,14 @@ const WorkoutDay: React.FC<Props> = ({
             </List>
           )}
         </Droppable>
+        <div style={{ textAlign: 'right', margin: '2em' }}>
+          <Button variant='outlined' size='large' sx={{ mr: '1em' }}>
+            CANCEL
+          </Button>
+          <Button variant='contained' size='large' endIcon={<FitnessCenterIcon />}>
+            SAVE
+          </Button>
+        </div>
       </Box>
     </>
   );

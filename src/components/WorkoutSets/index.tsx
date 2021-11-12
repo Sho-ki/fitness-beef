@@ -81,10 +81,10 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
     if (!destination) {
       return;
     }
-    if (destination.droppableId === source.droppableId && destination.droppableId === 'workoutItems') {
+    if (destination.droppableId === source.droppableId || destination.droppableId === 'workoutItems') {
       return;
     }
-    if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'workoutItems') {
+    if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'deleteList') {
       return;
     }
 

@@ -136,7 +136,7 @@ const ItemModal = ({ workoutitems, onGetWorkoutItems, onDeleteWorkoutItem, categ
         style={{
           display: 'flex',
           justifyContent: 'center',
-          minHeight: '7em',
+          minHeight: '5em',
           alignItems: 'end',
         }}
       >
