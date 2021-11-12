@@ -33,7 +33,7 @@ const Signin = () => {
     if (res.status === 200 || res.status === 201) {
       router.push(`user/${res.data.id}/edit`);
     }
-
+  };
 
   const onEmailChangeHandler = (email: string) => {
     setUserInput((prevInput) => ({ ...prevInput, email }));
