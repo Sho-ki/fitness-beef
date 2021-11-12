@@ -1,10 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import { Link } from '@mui/material';
+import { useRouter } from 'next/router';
+
 import TextFieldInput from './TextFieldInput';
 import { textMargin } from './TextFieldInput';
 
@@ -19,11 +22,18 @@ const initialState: State = {
 };
 
 const Signin = () => {
-  const [isValidLogin, setIsValidLogin] = React.useState(true);
+  const [isValidLogin, setIsValidLogin] = React.useState<boolean | undefined>();
   const [userInput, setUserInput] = React.useState(initialState);
   const [isSignin, setIsSignin] = React.useState(true);
+  const router = useRouter();
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    const url = `http://localhost:8000/signIn`;
+    const res = await axios.post(url, { email: userInput.email, password: userInput.password });
+    if (res.status === 200 || res.status === 201) {
+      router.push(`user/${res.data.id}/edit`);
+    }
+
 
   const onEmailChangeHandler = (email: string) => {
     setUserInput((prevInput) => ({ ...prevInput, email }));
@@ -54,44 +64,35 @@ const Signin = () => {
             {isSignin ? 'Sign in' : 'Sign up'}
           </Typography>
 
-          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextFieldInput
-              id={'username'}
-              label={'User Name'}
-              name={'username'}
-              onChange={onEmailChangeHandler}
-              margin={textMargin.NORMAL}
-            />
-            <TextFieldInput
-              id={'password'}
-              label={'Password'}
-              name={'password'}
-              type={'password'}
-              autoComplete={'current-password'}
-              onChange={onPasswordChangeHandler}
-              margin={textMargin.NORMAL}
-            />
+          <TextFieldInput
+            id={'username'}
+            label={'User Name'}
+            name={'username'}
+            onChange={onEmailChangeHandler}
+            margin={textMargin.NORMAL}
+          />
+          <TextFieldInput
+            id={'password'}
+            label={'Password'}
+            name={'password'}
+            type={'password'}
+            autoComplete={'current-password'}
+            onChange={onPasswordChangeHandler}
+            margin={textMargin.NORMAL}
+          />
 
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {isSignin ? 'Sign In' : 'Sign Up'}
-            </Button>
-          </Box>
+          <Button onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+            {isSignin ? 'Sign In' : 'Sign Up'}
+          </Button>
 
           <Typography>
             {isSignin ? (
               <>
-                Don’t have an account?{' '}
-                <Link onClick={onIsSigninHandler}>Sign up</Link>{' '}
+                Don’t have an account? <Link onClick={onIsSigninHandler}>Sign up</Link>{' '}
               </>
             ) : (
               <>
-                Have an account?{' '}
-                <Link onClick={onIsSigninHandler}>Sign in</Link>
+                Have an account? <Link onClick={onIsSigninHandler}>Sign in</Link>
               </>
             )}
           </Typography>
