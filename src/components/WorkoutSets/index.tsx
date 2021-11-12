@@ -148,7 +148,6 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
     setOrderChangedWeek(orderChangedWeek);
   };
 
-  console.log(week);
   return (
     <Container>
       <Typography>{today}</Typography>
