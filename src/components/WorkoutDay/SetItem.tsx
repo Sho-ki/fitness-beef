@@ -4,9 +4,14 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import { Box } from '@mui/system';
-import { Colors } from '../../types/workout';
+import { Colors, WorkoutSet } from '../../types/workout';
 
-const SetItem = ({ workoutset, idx }: any) => {
+type Props = {
+  workoutset: WorkoutSet;
+  idx: number;
+};
+
+const SetItem = ({ workoutset, idx }: Props) => {
   const [isOnDeleteButton, setIsOnDeleteButton] = React.useState<boolean>(false);
 
   return (
@@ -64,7 +69,7 @@ const SetItem = ({ workoutset, idx }: any) => {
         {`
           .workoutSetItemBtn {
             border: none;
-            background-color: ${workoutset.color};
+            background-color: ${Colors[workoutset.color]};
             border-radius: 30px;
             width: 95%;
             min-height: 7em;
