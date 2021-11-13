@@ -34,7 +34,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       }
       return a?.set_order - b?.set_order;
     });
-  }, []);
+  }, [workoutsets]);
 
   workoutsets.map((workoutset, i) => {
     switch (workoutset.day_of_week) {

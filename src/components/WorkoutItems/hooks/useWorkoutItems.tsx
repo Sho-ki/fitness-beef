@@ -35,7 +35,6 @@ const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
 
   const onDeleteWorkoutItem = React.useCallback(async (workoutItemId: number | null) => {
     await deleteWorkoutItem(workoutItemId);
-    setWorkoutItems(state);
   }, []);
 
   return [state, { onGetWorkoutItems, onDeleteWorkoutItem }];
