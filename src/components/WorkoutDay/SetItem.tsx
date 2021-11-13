@@ -72,7 +72,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
         {`
           .workoutSetItemBtn {
             border: none;
-            background-color: ${workoutset.color};
+            background-color: ${Colors[workoutset.color]};
             border-radius: 30px;
             width: 95%;
             min-height: 7em;
