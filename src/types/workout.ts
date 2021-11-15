@@ -1,7 +1,7 @@
 export type WorkoutSet = {
   id: number | null;
   day_of_week: DayOfWeek;
-  users_id: number;
+  users_id: number | null;
   set_order: number | null;
   reps: number | null;
   sets: number | null;
@@ -9,7 +9,6 @@ export type WorkoutSet = {
   category: Categories;
   color: Colors;
   workout_item_id: number | null;
-  day_id?: number;
 };
 
 export type WorkoutItem = {

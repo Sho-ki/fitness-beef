@@ -2,7 +2,7 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import { Box } from '@mui/system';
 import { Button, Typography } from '@mui/material';
-import { dayCombination, WorkoutSet } from '../../types/workout';
+import { dayCombination } from '../../types/workout';
 import { Droppable } from 'react-beautiful-dnd';
 import SetItem from './SetItem';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -14,9 +14,8 @@ type Props = {
 };
 
 const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHandler }: Props) => {
-  const { orderChangedWeek, dayOfToday } = React.useContext(WorkoutSetItemContext);
+  const { orderChangedWeek, dayOfToday, saveSetItems } = React.useContext(WorkoutSetItemContext);
 
-  console.log('OKOK');
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', minHeight: '5em', alignItems: 'end' }}>
@@ -58,7 +57,7 @@ const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHa
           <Button variant='outlined' size='large' sx={{ mr: '1em' }}>
             CANCEL
           </Button>
-          <Button variant='contained' size='large' endIcon={<FitnessCenterIcon />}>
+          <Button variant='contained' size='large' endIcon={<FitnessCenterIcon />} onClick={saveSetItems}>
             SAVE
           </Button>
         </div>

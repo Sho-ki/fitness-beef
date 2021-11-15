@@ -35,10 +35,8 @@ const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
 
   const onDeleteWorkoutItem = async (workoutItemId: number | null, deleteIndex: number) => {
     state.splice(deleteIndex, 1);
-    console.log('2', state);
     setWorkoutItems([...state]);
     await deleteWorkoutItem(workoutItemId);
-    console.log('5', state);
   };
 
   return [state, { onGetWorkoutItems, onDeleteWorkoutItem }];

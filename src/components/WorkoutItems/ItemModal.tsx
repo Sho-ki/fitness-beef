@@ -19,9 +19,8 @@ import { Box } from '@mui/system';
 import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
 import { Droppable } from 'react-beautiful-dnd';
-import useWorkoutItems, { Handlers, State } from './hooks/useWorkoutItems';
+import { Handlers, State } from './hooks/useWorkoutItems';
 import useCategoryColorPair from './hooks/useCategoryColorPairs';
-import { WorkoutItem } from '../../types/workout';
 import { CategoryColor } from '../../types/workout';
 
 export type Data = {
@@ -36,7 +35,6 @@ type Props = {
 };
 
 const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
-  console.log('workoutitems', workoutitems);
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
   const style = {
     position: 'absolute' as 'absolute',
