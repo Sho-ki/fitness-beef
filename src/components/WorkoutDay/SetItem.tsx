@@ -4,7 +4,9 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import { Box } from '@mui/system';
-import { Colors, WorkoutSet } from '../../types/workout';
+import { WorkoutSet } from '../../types/workout';
+import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
+import { CategoryColors } from '../../styles/Colors';
 
 type Props = {
   workoutset: WorkoutSet;
@@ -13,6 +15,13 @@ type Props = {
 const SetItem = ({ workoutset, idx }: Props) => {
   const [isOnDeleteButton, setIsOnDeleteButton] = React.useState<boolean>(false);
 
+  const { onDeleteSetItem, orderChangedWeek, dayOfToday } = React.useContext(WorkoutSetItemContext);
+
+  const onDeleteSetItemHandler = () => {
+    orderChangedWeek[dayOfToday].splice(idx, 1);
+
+    onDeleteSetItem(orderChangedWeek, workoutset.id);
+  };
   return (
     <>
       <Draggable
@@ -61,7 +70,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
               onMouseLeave={() => {
                 setIsOnDeleteButton(false);
               }}
-              onClick={() => console.log('OK')}
+              onClick={onDeleteSetItemHandler}
             >
               <CloseIcon />
             </button>
@@ -72,7 +81,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
         {`
           .workoutSetItemBtn {
             border: none;
-            background-color: ${Colors[workoutset.color]};
+            background-color: ${CategoryColors[workoutset.color]};
             border-radius: 30px;
             width: 95%;
             min-height: 7em;

@@ -1,7 +1,7 @@
 import { Container, Grid } from '@mui/material';
 import WorkoutDay from '../WorkoutDay';
 import ItemModal from '../WorkoutItems/ItemModal';
-import { CategoryColor, WorkoutItem } from '../../types/workout';
+import { CategoryColor, dayCombination, WorkoutItem } from '../../types/workout';
 
 import { Typography } from '@material-ui/core';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
@@ -9,6 +9,7 @@ import React from 'react';
 import { WorkoutSet, DayOfWeek } from '../../types/workout';
 import useWorkoutItems from '../WorkoutItems/hooks/useWorkoutItems';
 import axios from 'axios';
+import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
 
 type Props = {
   workoutsets: WorkoutSet[];
@@ -27,6 +28,9 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
 
   let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
 
+  const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
+  const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
+
   React.useEffect(() => {
     workoutsets.sort((a, b) => {
       if (!a.set_order || !b.set_order) {
@@ -35,7 +39,6 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       return a?.set_order - b?.set_order;
     });
   }, [workoutsets]);
-
   workoutsets.map((workoutset, i) => {
     switch (workoutset.day_of_week) {
       case DayOfWeek.Sun:
@@ -72,10 +75,16 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
     setDayOfToday(dayOfToday === 6 ? 0 : dayOfToday + 1);
   };
 
-  const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
-  const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
+  const onDeleteSetItem = React.useCallback((newWeekArr: WorkoutSet[][], deleteId: number | null) => {
+    if (deleteId) {
+      setDeleteIdList((prev) => [...prev, deleteId]);
+    }
+    setOrderChangedWeek([...newWeekArr]);
+    console.log('newWeekArr', newWeekArr);
+    console.log('newWeekArr2', [...newWeekArr]);
+  }, []);
 
-  const onDragEnd = async (result: DropResult) => {
+  const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -88,13 +97,12 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       return;
     }
 
-    const setItems = Array.from(orderChangedWeek[dayOfToday]);
-    // const items = Array.from(workoutItems);
-    if (destination.droppableId === 'workoutSetItems' && source.droppableId === 'workoutSetItems') {
-      const [reorderedItem] = setItems.splice(result.source.index, 1);
-      setItems.splice(destination.index, 0, reorderedItem);
-      orderChangedWeek[dayOfToday] = setItems;
-      setOrderChangedWeek(orderChangedWeek);
+    const todaysItems = Array.from(orderChangedWeek[dayOfToday]);
+    if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'workoutSetItems') {
+      const [reorderedItem] = todaysItems.splice(result.source.index, 1);
+      todaysItems.splice(destination.index, 0, reorderedItem);
+      orderChangedWeek[dayOfToday] = todaysItems;
+      setOrderChangedWeek([...orderChangedWeek]);
       return;
     }
 
@@ -103,10 +111,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       let result = window.confirm(`Delete ${passedItemInfo.workout_item}(${passedItemInfo.category})?`);
       if (!result) return;
 
-      state.splice(source.index, 1);
-      handlers.onDeleteWorkoutItem(passedItemInfo.id);
-
-      handlers.onGetWorkoutItems(state[0].users_id);
+      handlers.onDeleteWorkoutItem(passedItemInfo.id, source.index);
 
       let updatedWeek = orderChangedWeek.map((eachWeek) => {
         return eachWeek.filter((item) => {
@@ -119,60 +124,56 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       return;
     }
 
-    const newItemIdx = source.index;
-    const newItem = {
-      workout_item: passedItemInfo.workout_item,
-      category: passedItemInfo.category,
-      color: passedItemInfo.color,
-      day_of_week: DayOfWeek.Tue,
-      workout_item_id: passedItemInfo.id,
-      id: null,
-      reps: 12,
-      set_order: newItemIdx,
-      sets: 3,
-      users_id: passedItemInfo.users_id,
-    };
-    if (!orderChangedWeek[dayOfToday][0].workout_item) {
-      setOrderChangedWeek((prev) => {
-        return prev.map((arr, index) => {
-          if (dayOfToday === index) {
-            arr = [];
-          }
-          return arr;
+    if (source.droppableId === 'workoutItems' && destination.droppableId === 'workoutSetItems') {
+      const newItemIdx = source.index;
+      const newItem = {
+        workout_item: passedItemInfo.workout_item,
+        category: passedItemInfo.category,
+        color: passedItemInfo.color,
+        day_of_week: DayOfWeek.Tue,
+        workout_item_id: passedItemInfo.id,
+        id: null,
+        reps: 12,
+        set_order: newItemIdx,
+        sets: 3,
+        users_id: passedItemInfo.users_id,
+      };
+      if (orderChangedWeek[dayOfToday].length <= 0) {
+        setOrderChangedWeek((prev) => {
+          return prev.map((arr, index) => {
+            if (dayOfToday === index) {
+              arr = [];
+            }
+            return arr;
+          });
         });
-      });
-    }
+      }
 
-    setItems.splice(destination.index, 0, newItem);
-    orderChangedWeek[dayOfToday] = setItems;
-    setOrderChangedWeek(orderChangedWeek);
+      todaysItems.splice(destination.index, 0, newItem);
+      orderChangedWeek[dayOfToday] = todaysItems;
+      setOrderChangedWeek([...orderChangedWeek]);
+    }
   };
 
-  console.log(week);
   return (
-    <Container>
-      <Typography>{today}</Typography>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <WorkoutDay
-              week={orderChangedWeek}
-              dayOfToday={dayOfToday}
-              onPrevDayChangeHandler={onPrevDayChangeHandler}
-              onNextDayChangeHandler={onNextDayChangeHandler}
-            />
+    <WorkoutSetItemContext.Provider value={{ onDeleteSetItem, orderChangedWeek, dayOfToday }}>
+      <Container>
+        <Typography>{today}</Typography>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <WorkoutDay
+                onPrevDayChangeHandler={onPrevDayChangeHandler}
+                onNextDayChangeHandler={onNextDayChangeHandler}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <ItemModal workoutitems={state} handlers={handlers} categorycolor={categorycolor} />
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <ItemModal
-              workoutitems={state}
-              onDeleteWorkoutItem={handlers.onDeleteWorkoutItem}
-              onGetWorkoutItems={handlers.onGetWorkoutItems}
-              categorycolor={categorycolor}
-            />
-          </Grid>
-        </Grid>
-      </DragDropContext>
-    </Container>
+        </DragDropContext>
+      </Container>
+    </WorkoutSetItemContext.Provider>
   );
 };
 

@@ -2,30 +2,31 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import { Box } from '@mui/system';
 import { Button, Typography } from '@mui/material';
-import { WorkoutSet } from '../../types/workout';
+import { dayCombination, WorkoutSet } from '../../types/workout';
 import { Droppable } from 'react-beautiful-dnd';
 import SetItem from './SetItem';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
 
 type Props = {
-  week: Array<WorkoutSet[]>;
   onPrevDayChangeHandler: () => void;
   onNextDayChangeHandler: () => void;
-  dayOfToday: any;
 };
 
-const WorkoutDay: React.FC<Props> = ({
-  week,
-  onPrevDayChangeHandler,
-  onNextDayChangeHandler,
-  dayOfToday,
-}: Props) => {
+const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHandler }: Props) => {
+  const { orderChangedWeek, dayOfToday } = React.useContext(WorkoutSetItemContext);
+
+  console.log('OKOK');
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', minHeight: '5em', alignItems: 'end' }}>
-        <Button onClick={onPrevDayChangeHandler}>{dayOfToday === 0 ? 6 : dayOfToday - 1}</Button>
-        <Typography variant='h4'>{dayOfToday}</Typography>
-        <Button onClick={onNextDayChangeHandler}>{dayOfToday === 6 ? 0 : dayOfToday + 1}</Button>
+        <Button onClick={onPrevDayChangeHandler}>
+          {dayCombination[dayOfToday === 0 ? 6 : dayOfToday - 1]}
+        </Button>
+        <Typography variant='h4'>{dayCombination[dayOfToday]}</Typography>
+        <Button onClick={onNextDayChangeHandler}>
+          {dayCombination[dayOfToday === 6 ? 0 : dayOfToday + 1]}
+        </Button>
       </div>
       <Box
         sx={{
@@ -43,9 +44,9 @@ const WorkoutDay: React.FC<Props> = ({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {!week[dayOfToday][0].workout_item && <p>No Workouts Are Registered</p>}
-              {week[dayOfToday] &&
-                week[dayOfToday]?.map(
+              {orderChangedWeek[dayOfToday].length <= 0 && <p>No Workouts Are Registered</p>}
+              {orderChangedWeek[dayOfToday] &&
+                orderChangedWeek[dayOfToday].map(
                   (workoutset, i) =>
                     workoutset.workout_item && <SetItem workoutset={workoutset} key={i} idx={i} />
                 )}

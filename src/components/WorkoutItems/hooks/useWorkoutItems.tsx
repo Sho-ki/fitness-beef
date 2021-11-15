@@ -23,19 +23,23 @@ export type State = WorkoutItem;
 
 export type Handlers = {
   onGetWorkoutItems: (userId: number | null) => void;
-  onDeleteWorkoutItem: (workoutItemId: number) => void;
+  onDeleteWorkoutItem: (workoutItemId: number, deleteIndex: number) => void;
 };
 
 const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
   const [state, setWorkoutItems] = React.useState(initialState);
 
-  const onGetWorkoutItems = React.useCallback(async (userId: number | null) => {
+  const onGetWorkoutItems = async (userId: number | null) => {
     setWorkoutItems(await getWorkoutItems(userId));
-  }, []);
+  };
 
-  const onDeleteWorkoutItem = React.useCallback(async (workoutItemId: number | null) => {
+  const onDeleteWorkoutItem = async (workoutItemId: number | null, deleteIndex: number) => {
+    state.splice(deleteIndex, 1);
+    console.log('2', state);
+    setWorkoutItems([...state]);
     await deleteWorkoutItem(workoutItemId);
-  }, []);
+    console.log('5', state);
+  };
 
   return [state, { onGetWorkoutItems, onDeleteWorkoutItem }];
 };

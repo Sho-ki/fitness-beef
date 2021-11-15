@@ -9,6 +9,7 @@ export type WorkoutSet = {
   category: Categories;
   color: Colors;
   workout_item_id: number | null;
+  day_id?: number;
 };
 
 export type WorkoutItem = {
@@ -59,4 +60,14 @@ export enum Colors {
 export type CategoryColor = {
   category: Categories;
   color: Colors;
+};
+
+export const dayCombination: { [key: string]: any } = {
+  0: 'Sun',
+  1: 'Mon',
+  2: 'Tue',
+  3: 'Wed',
+  4: 'Thu',
+  5: 'Fri',
+  6: 'Sat',
 };

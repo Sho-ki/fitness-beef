@@ -31,12 +31,12 @@ export type Data = {
 
 type Props = {
   workoutitems: State[];
-  onGetWorkoutItems: (userId: number | null) => void;
-  onDeleteWorkoutItem: (workoutItemId: number) => void;
+  handlers: Handlers;
   categorycolor: CategoryColor[];
 };
 
-const ItemModal = ({ workoutitems, onGetWorkoutItems, onDeleteWorkoutItem, categorycolor }: Props) => {
+const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
+  console.log('workoutitems', workoutitems);
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
   const style = {
     position: 'absolute' as 'absolute',
@@ -90,7 +90,7 @@ const ItemModal = ({ workoutitems, onGetWorkoutItems, onDeleteWorkoutItem, categ
       const res = await axios.put(updateURL, args);
       setMessage(res.data.message);
       if (res.status === 201) {
-        onGetWorkoutItems(workoutitems[0].users_id);
+        handlers.onGetWorkoutItems(workoutitems[0].users_id);
         setOpen(false);
       }
     } else {
@@ -99,7 +99,7 @@ const ItemModal = ({ workoutitems, onGetWorkoutItems, onDeleteWorkoutItem, categ
       setMessage(res.data.message);
 
       if (res.status === 201) {
-        onGetWorkoutItems(workoutitems[0].users_id);
+        handlers.onGetWorkoutItems(workoutitems[0].users_id);
         setCategory('');
         setWorkoutName('');
       }

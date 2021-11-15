@@ -2,9 +2,9 @@ import { Button, List, ListItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { State } from './hooks/useWorkoutItems';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { WorkoutItem } from '../../types/workout';
+import { CategoryColors } from '../../styles/Colors';
 
 type Props = {
   workoutitems: WorkoutItem[];
@@ -86,6 +86,8 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
                               borderRadius: 20,
                               width: '80%',
                               minHeight: '4em',
+                              border: `1px solid ${CategoryColors[workoutitem.color]}`,
+                              backgroundColor: `${CategoryColors[workoutitem.color]}`,
                             }}
                             onClick={() =>
                               onClickEdit(
