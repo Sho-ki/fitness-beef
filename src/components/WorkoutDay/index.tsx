@@ -2,11 +2,12 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import { Box } from '@mui/system';
 import { Button, Typography } from '@mui/material';
+
 import { dayCombination } from '../../types/workout';
 import { Droppable } from 'react-beautiful-dnd';
 import SetItem from './SetItem';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
+import { FitnessCenterIcon } from '../Icon';
 
 type Props = {
   onPrevDayChangeHandler: () => void;
@@ -18,7 +19,7 @@ const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHa
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', minHeight: '5em', alignItems: 'end' }}>
+      <div className='show-today'>
         <Button onClick={onPrevDayChangeHandler}>
           {dayCombination[dayOfToday === 0 ? 6 : dayOfToday - 1]}
         </Button>
@@ -53,7 +54,7 @@ const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHa
             </List>
           )}
         </Droppable>
-        <div style={{ textAlign: 'right', margin: '2em' }}>
+        <div className='save-btn-area'>
           <Button variant='outlined' size='large' sx={{ mr: '1em' }}>
             CANCEL
           </Button>
@@ -62,6 +63,20 @@ const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHa
           </Button>
         </div>
       </Box>
+      <style jsx>
+        {`
+          .show-today {
+            display: flex;
+            justify-content: center;
+            min-height: 5em;
+            align-items: end;
+          }
+          .save-btn-area {
+            text-align: right;
+            margin: 2em;
+          }
+        `}
+      </style>
     </>
   );
 };

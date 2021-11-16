@@ -1,8 +1,8 @@
-import { Button, List, ListItem, TextField } from '@mui/material';
+import React from 'react';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
+import { Button, List, ListItem } from '@mui/material';
+
 import useWorkoutItems from './hooks/useWorkoutItems';
-import { State } from './hooks/useWorkoutItems';
 import { WorkoutItem } from '../../types/workout';
 
 type Props = {
@@ -32,7 +32,7 @@ const WorkoutItems = ({ workoutitems }: Props) => {
         ></Button>
         <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
           {state.map(
-            (workoutitem, i) =>
+            (workoutitem) =>
               workoutitem.workout_item && (
                 <ListItem
                   alignItems='center'

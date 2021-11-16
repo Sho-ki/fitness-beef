@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { GetServerSideProps } from 'next';
-// import WorkoutSets from '../../components/WorkoutSets';
-import { resetServerContext } from 'react-beautiful-dnd';
 import dynamic from 'next/dynamic';
-const WorkoutSets = dynamic(import('../../../components/WorkoutSets'), { ssr: false });
+import { resetServerContext } from 'react-beautiful-dnd';
 
-// import WorkoutSets from '../../../components/WorkoutSets';
 import { CategoryColor } from '../../../types/workout';
+import { GetServerSideProps } from 'next';
 import { WorkoutItem, WorkoutSet } from '../../../types/workout';
+
+const WorkoutSets = dynamic(import('../../../components/WorkoutSets'), { ssr: false });
 
 export type Props = {
   workoutsets: WorkoutSet[];

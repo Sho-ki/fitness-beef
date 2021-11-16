@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button, Dialog, DialogTitle, DialogActions, IconButton, Divider } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 
 import { CategoryColor } from '../../types/workout';
 import CategoryModalBody from './CategoryModalBody';
+import { CloseIcon } from '../Icon';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {

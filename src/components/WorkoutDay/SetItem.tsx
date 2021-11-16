@@ -1,12 +1,13 @@
-import { ListItem, Typography } from '@material-ui/core';
-import { Draggable } from 'react-beautiful-dnd';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import { Box } from '@mui/system';
+import { Draggable } from 'react-beautiful-dnd';
+import { ListItem, Typography } from '@material-ui/core';
+
+import { CategoryColors } from '../../styles/Colors';
+import { CloseIcon, DragIndicatorIcon } from '../Icon';
 import { WorkoutSet } from '../../types/workout';
 import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
-import { CategoryColors } from '../../styles/Colors';
+import workoutDayStyle from './workoutDayStyle';
 
 type Props = {
   workoutset: WorkoutSet;
@@ -36,34 +37,26 @@ const SetItem = ({ workoutset, idx }: Props) => {
             </div>
             <button
               disabled={isOnDeleteButton}
-              style={{}}
-              className='workoutSetItemBtn'
+              className='workout-set-item-btn'
+              style={{ backgroundColor: `${CategoryColors[workoutset.color]}` }}
               onClick={() => console.log('Edit')}
             >
-              <Box sx={{ display: 'flex', marginLeft: '1em' }}>
-                <Typography
-                  style={{
-                    textAlign: 'left',
-                    display: 'inline-block',
-                    fontSize: '1.5em',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {idx + 1}.
-                </Typography>
-                <Typography
-                  style={{
-                    marginLeft: '2em',
-                    display: 'inline-block',
-                    textAlign: 'left',
-                  }}
-                >
+              <Box
+                sx={{
+                  display: 'flex',
+                  marginLeft: '1em',
+                  alignItems: 'center',
+                  color: `${CategoryColors[workoutset.color] === '#000000' ? 'white' : 'black'}`,
+                }}
+              >
+                <h4 className='set-item-number'>{idx + 1}.</h4>
+                <p className='set-item-text'>
                   {workoutset.workout_item} {workoutset.reps} * {workoutset.sets}
-                </Typography>
+                </p>
               </Box>
             </button>
             <button
-              className='workoutSetItemDelete'
+              className='workout-set-item-delete-btn'
               onMouseOver={() => {
                 setIsOnDeleteButton(true);
               }}
@@ -77,46 +70,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
           </ListItem>
         )}
       </Draggable>
-      <style jsx>
-        {`
-          .workoutSetItemBtn {
-            border: none;
-            background-color: ${CategoryColors[workoutset.color]};
-            border-radius: 30px;
-            width: 95%;
-            min-height: 7em;
-            cursor: pointer;
-          }
-
-          .workoutSetItemBtn:hover {
-            filter: brightness(0.8);
-          }
-          .workoutSetItemBtn:active {
-            position: relative;
-            top: 1px;
-          }
-
-          .workoutSetItemDelete {
-            padding: 10px;
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            color: lightgray;
-          }
-
-          .workoutSetItemDelete:hover {
-            background-color: #ededed;
-            border-radius: 50px;
-            color: red;
-          }
-
-          .workoutSetItemDelete:active {
-            position: relative;
-            top: 1px;
-            filter: brightness(0.8);
-          }
-        `}
-      </style>
+      <style jsx>{workoutDayStyle}</style>
     </>
   );
 };

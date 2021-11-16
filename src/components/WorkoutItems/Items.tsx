@@ -1,14 +1,15 @@
-import { Button, List, ListItem, TextField } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
+import { Box } from '@mui/system';
+import { Button, List, ListItem, TextField } from '@mui/material';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { WorkoutItem } from '../../types/workout';
+
 import { CategoryColors } from '../../styles/Colors';
+import { DragIndicatorIcon } from '../Icon';
+import { WorkoutItem } from '../../types/workout';
 
 type Props = {
   workoutitems: WorkoutItem[];
-  onClickEdit: (userId: any, categoryName: any, name: any, itemId: any) => void;
+  onClickEdit: (userId: number | null, categoryName: string, name: string | null, itemId: number) => void;
 };
 
 const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {

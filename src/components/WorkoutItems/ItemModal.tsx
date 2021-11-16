@@ -10,18 +10,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Box } from '@mui/system';
+import { Droppable } from 'react-beautiful-dnd';
+import React, { useEffect } from 'react';
 
 import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
-import { Droppable } from 'react-beautiful-dnd';
-import { Handlers, State } from './hooks/useWorkoutItems';
 import useCategoryColorPair from './hooks/useCategoryColorPairs';
+import { AddIcon, DeleteIcon } from '../Icon';
 import { CategoryColor } from '../../types/workout';
+import { Handlers, State } from './hooks/useWorkoutItems';
 
 export type Data = {
   name: string;
@@ -128,30 +127,35 @@ const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
     setWorkoutName(name);
   }, []);
 
+  const getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? 'pink' : '',
+    borderRadius: '50%',
+    width: '80px',
+    height: '80px',
+  });
+
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          minHeight: '5em',
-          alignItems: 'end',
-        }}
-      >
+      <div className='workout-item-list'>
         <CustomizedDialogs
           categorycolor={categoryColor}
           onUpdateCategoryColorPair={categorycolorHandlers.onUpdateCategoryColorPair}
         />
       </div>
       <WorkoutItems workoutitems={workoutitems} onClickEdit={onClickEdit} />
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div className='workout-item-btn-area'>
         <Button onClick={handleOpen}>
           <AddIcon fontSize='medium' color='primary' />
         </Button>
 
         <Droppable droppableId='deleteList'>
-          {(provided) => (
-            <Button onClick={handleOpen} {...provided.droppableProps} ref={provided.innerRef}>
+          {(provided, snapshot) => (
+            <Button
+              onClick={handleOpen}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
               <DeleteIcon fontSize='medium' color='primary' />
             </Button>
           )}
@@ -199,7 +203,7 @@ const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
                   <MenuItem value={'Lower Body'}>Lower Body</MenuItem>
                 </Select>
               </FormControl>
-              <div style={{ position: 'absolute', right: '3em', bottom: '2em' }}>
+              <div className='modal-btn-area'>
                 <Stack spacing={2} direction='row'>
                   <Button
                     name='on-close'
@@ -225,6 +229,31 @@ const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
           </form>
         </>
       </Modal>
+      <style jsx>
+        {`
+          .workout-item-list {
+            display: flex;
+            justify-content: center;
+            min-height: 5em;
+            align-items: end;
+          }
+          .save-btn-area {
+            text-align: right;
+            margin: 2em;
+          }
+
+          .workout-item-btn-area {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .modal-btn-area {
+            position: absolute;
+            right: 3em;
+            bottom: 2em;
+          }
+        `}
+      </style>
     </div>
   );
 };

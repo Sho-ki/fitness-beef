@@ -61,12 +61,12 @@ export type CategoryColor = {
   color: Colors;
 };
 
-export const dayCombination: { [key: string]: any } = {
-  0: 'Sun',
-  1: 'Mon',
-  2: 'Tue',
-  3: 'Wed',
-  4: 'Thu',
-  5: 'Fri',
-  6: 'Sat',
+export const dayCombination: { [key: number]: DayOfWeek } = {
+  0: DayOfWeek.Sun,
+  1: DayOfWeek.Mon,
+  2: DayOfWeek.Tue,
+  3: DayOfWeek.Wed,
+  4: DayOfWeek.Thu,
+  5: DayOfWeek.Fri,
+  6: DayOfWeek.Sat,
 };

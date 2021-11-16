@@ -1,14 +1,14 @@
-import { Container, Grid } from '@mui/material';
-import WorkoutDay from '../WorkoutDay';
-import ItemModal from '../WorkoutItems/ItemModal';
-import { CategoryColor, dayCombination, WorkoutItem } from '../../types/workout';
-
-import { Typography } from '@material-ui/core';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import React from 'react';
-import { WorkoutSet, DayOfWeek } from '../../types/workout';
-import useWorkoutItems from '../WorkoutItems/hooks/useWorkoutItems';
 import axios from 'axios';
+import { Container, Grid } from '@mui/material';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { Typography } from '@material-ui/core';
+
+import ItemModal from '../WorkoutItems/ItemModal';
+import WorkoutDay from '../WorkoutDay';
+import useWorkoutItems from '../WorkoutItems/hooks/useWorkoutItems';
+import { CategoryColor, dayCombination, WorkoutItem } from '../../types/workout';
+import { WorkoutSet, DayOfWeek } from '../../types/workout';
 import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
 
 type Props = {
@@ -22,21 +22,54 @@ type Data = {
   deleteIdList: number[];
 };
 
+const orderChange = (todaysItems: WorkoutSet[], sourceIndex: number, destinationIndex: number) => {
+  const [reorderedItem] = todaysItems.splice(sourceIndex, 1);
+  todaysItems.splice(destinationIndex, 0, reorderedItem);
+  return todaysItems;
+};
+
+const itemDelete = (passedItemId: number, orderChangedWeek: WorkoutSet[][]) => {
+  return orderChangedWeek.map((eachWeek) => {
+    return eachWeek.filter((item) => {
+      return item.workout_item_id !== passedItemId;
+    });
+  });
+};
+
+const addItem = (
+  destinationIndex: number,
+  todaysItems: WorkoutSet[],
+  passedItemInfo: WorkoutItem,
+  dayOfToday: number
+) => {
+  const newItem: WorkoutSet = {
+    workout_item: passedItemInfo.workout_item,
+    category: passedItemInfo.category,
+    color: passedItemInfo.color,
+    day_of_week: dayCombination[dayOfToday],
+    workout_item_id: passedItemInfo.id,
+    id: null,
+    reps: 12,
+    set_order: destinationIndex,
+    sets: 3,
+    users_id: passedItemInfo.users_id,
+  };
+
+  todaysItems.splice(destinationIndex, 0, newItem);
+  return todaysItems;
+};
+
 const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor }: Props) => {
   let getDate = new Date();
   let today = getDate.getMonth() + 1 + ' / ' + getDate.getDate() + ' / ' + getDate.getFullYear();
   const [state, handlers] = useWorkoutItems(workoutitems);
-
   let dayOfWeek = getDate.getDay();
-
   const [dayOfToday, setDayOfToday] = React.useState(dayOfWeek);
-
   let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
 
   const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
   const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
 
-  console.log(deleteIdList);
   React.useEffect(() => {
     workoutsets.sort((a, b) => {
       if (!a.set_order || !b.set_order) {
@@ -91,21 +124,15 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
-    if (!destination) {
-      return;
-    }
-    if (destination.droppableId === source.droppableId && destination.droppableId === 'workoutItems') {
-      return;
-    }
-    if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'deleteList') {
-      return;
-    }
+    // If an invalid DnD is operated, return and nothing happens
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId && destination.droppableId === 'workoutItems') return;
+    if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'deleteList') return;
 
     const todaysItems = Array.from(orderChangedWeek[dayOfToday]);
     if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'workoutSetItems') {
       orderChangedWeek[dayOfToday] = orderChange(todaysItems, source.index, destination.index);
       setOrderChangedWeek([...orderChangedWeek]);
-
       return;
     }
 
@@ -171,40 +198,3 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
 };
 
 export default WorkoutSets;
-
-const orderChange = (todaysItems: WorkoutSet[], sourceIndex: number, destinationIndex: number) => {
-  const [reorderedItem] = todaysItems.splice(sourceIndex, 1);
-  todaysItems.splice(destinationIndex, 0, reorderedItem);
-  return todaysItems;
-};
-
-const itemDelete = (passedItemId: number, orderChangedWeek: WorkoutSet[][]) => {
-  return orderChangedWeek.map((eachWeek) => {
-    return eachWeek.filter((item) => {
-      return item.workout_item_id !== passedItemId;
-    });
-  });
-};
-
-const addItem = (
-  destinationIndex: number,
-  todaysItems: WorkoutSet[],
-  passedItemInfo: WorkoutItem,
-  dayOfToday: number
-) => {
-  const newItem: WorkoutSet = {
-    workout_item: passedItemInfo.workout_item,
-    category: passedItemInfo.category,
-    color: passedItemInfo.color,
-    day_of_week: dayCombination[dayOfToday],
-    workout_item_id: passedItemInfo.id,
-    id: null,
-    reps: 12,
-    set_order: destinationIndex,
-    sets: 3,
-    users_id: passedItemInfo.users_id,
-  };
-
-  todaysItems.splice(destinationIndex, 0, newItem);
-  return todaysItems;
-};
