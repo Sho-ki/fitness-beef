@@ -9,7 +9,6 @@ import WorkoutDay from '../WorkoutDay';
 import useWorkoutItems from '../WorkoutItems/hooks/useWorkoutItems';
 import { CategoryColor, dayCombination, WorkoutItem } from '../../types/workout';
 import { WorkoutSet, DayOfWeek } from '../../types/workout';
-import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
 
 type Props = {
   workoutsets: WorkoutSet[];
@@ -21,6 +20,20 @@ type Data = {
   workoutItemArray: WorkoutSet[][];
   deleteIdList: number[];
 };
+
+type setItemCtx = {
+  orderChangedWeek: WorkoutSet[][];
+  dayOfToday: number;
+  onDeleteSetItem: (newArr: WorkoutSet[][], deleteId: number | null) => void;
+  saveSetItems: () => void;
+};
+const DefaultCtxData: setItemCtx = {
+  orderChangedWeek: [],
+  dayOfToday: -1,
+  onDeleteSetItem: () => {},
+  saveSetItems: () => {},
+};
+export const WorkoutSetItemContext = React.createContext<setItemCtx>(DefaultCtxData);
 
 const orderChange = (todaysItems: WorkoutSet[], sourceIndex: number, destinationIndex: number) => {
   const [reorderedItem] = todaysItems.splice(sourceIndex, 1);

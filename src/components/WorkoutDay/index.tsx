@@ -6,7 +6,7 @@ import { Button, Typography } from '@mui/material';
 import { dayCombination } from '../../types/workout';
 import { Droppable } from 'react-beautiful-dnd';
 import SetItem from './SetItem';
-import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
+import { WorkoutSetItemContext } from '../WorkoutSets/index';
 import { FitnessCenterIcon } from '../Icon';
 
 type Props = {

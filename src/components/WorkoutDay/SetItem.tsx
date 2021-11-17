@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from '@mui/system';
 import { Draggable } from 'react-beautiful-dnd';
-import { ListItem, Typography } from '@material-ui/core';
+import { ListItem } from '@material-ui/core';
 
 import { CategoryColors } from '../../styles/Colors';
 import { CloseIcon, DragIndicatorIcon } from '../Icon';
 import { WorkoutSet } from '../../types/workout';
-import { WorkoutSetItemContext } from '../../store/WokroutSetItemCxt';
+import { WorkoutSetItemContext } from '../WorkoutSets/index';
 import workoutDayStyle from './workoutDayStyle';
 
 type Props = {
@@ -15,12 +15,9 @@ type Props = {
 };
 const SetItem = ({ workoutset, idx }: Props) => {
   const [isOnDeleteButton, setIsOnDeleteButton] = React.useState<boolean>(false);
-
   const { onDeleteSetItem, orderChangedWeek, dayOfToday } = React.useContext(WorkoutSetItemContext);
-
   const onDeleteSetItemHandler = () => {
     orderChangedWeek[dayOfToday].splice(idx, 1);
-
     onDeleteSetItem(orderChangedWeek, workoutset.id);
   };
   return (

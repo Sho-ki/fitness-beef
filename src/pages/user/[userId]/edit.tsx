@@ -1,9 +1,9 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
+import { GetServerSideProps } from 'next';
 import { resetServerContext } from 'react-beautiful-dnd';
 
 import { CategoryColor } from '../../../types/workout';
-import { GetServerSideProps } from 'next';
 import { WorkoutItem, WorkoutSet } from '../../../types/workout';
 
 const WorkoutSets = dynamic(import('../../../components/WorkoutSets'), { ssr: false });
