@@ -63,7 +63,7 @@ const addItem = (
     workout_item_id: passedItemInfo.id,
     id: null,
     reps: 12,
-    set_order: destinationIndex,
+    set_order: destinationIndex + 1,
     sets: 3,
     users_id: passedItemInfo.users_id,
   };
@@ -75,49 +75,52 @@ const addItem = (
 const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor }: Props) => {
   let getDate = new Date();
   let today = getDate.getMonth() + 1 + ' / ' + getDate.getDate() + ' / ' + getDate.getFullYear();
-  const [state, handlers] = useWorkoutItems(workoutitems);
   let dayOfWeek = getDate.getDay();
   const [dayOfToday, setDayOfToday] = React.useState(dayOfWeek);
-  let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
 
+  let week: Array<WorkoutSet[]> = [[], [], [], [], [], [], []];
+  const [state, handlers] = useWorkoutItems(workoutitems);
   const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
   const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
-
+  console.log(deleteIdList);
+  const [currWorkoutSets, setCurrWorkoutSets] = React.useState(workoutsets);
   React.useEffect(() => {
-    workoutsets.sort((a, b) => {
+    currWorkoutSets.sort((a, b) => {
       if (!a.set_order || !b.set_order) {
         return -1;
       }
       return a?.set_order - b?.set_order;
     });
-  }, [workoutsets]);
-  workoutsets.map((workoutset, i) => {
-    switch (workoutset.day_of_week) {
-      case DayOfWeek.Sun:
-        week[0].push(workoutset);
-        break;
-      case DayOfWeek.Mon:
-        week[1].push(workoutset);
-        break;
-      case DayOfWeek.Tue:
-        week[2].push(workoutset);
-        break;
-      case DayOfWeek.Wed:
-        week[3].push(workoutset);
-        break;
-      case DayOfWeek.Thu:
-        week[4].push(workoutset);
-        break;
-      case DayOfWeek.Fri:
-        week[5].push(workoutset);
-        break;
-      case DayOfWeek.Sat:
-        week[6].push(workoutset);
-        break;
-      default:
-        break;
-    }
-  });
+
+    currWorkoutSets.map((workoutset, i) => {
+      switch (workoutset.day_of_week) {
+        case DayOfWeek.Sun:
+          week[0].push(workoutset);
+          break;
+        case DayOfWeek.Mon:
+          week[1].push(workoutset);
+          break;
+        case DayOfWeek.Tue:
+          week[2].push(workoutset);
+          break;
+        case DayOfWeek.Wed:
+          week[3].push(workoutset);
+          break;
+        case DayOfWeek.Thu:
+          week[4].push(workoutset);
+          break;
+        case DayOfWeek.Fri:
+          week[5].push(workoutset);
+          break;
+        case DayOfWeek.Sat:
+          week[6].push(workoutset);
+          break;
+        default:
+          break;
+      }
+    });
+    setOrderChangedWeek([...week]);
+  }, [currWorkoutSets]);
 
   const onPrevDayChangeHandler = () => {
     setDayOfToday(dayOfToday === 0 ? 6 : dayOfToday - 1);
@@ -179,13 +182,19 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
   };
 
   const saveSetItems = async () => {
+    for (let i = 0; i < orderChangedWeek.length; i++) {
+      for (let j = 0; j < orderChangedWeek[i].length; j++) {
+        orderChangedWeek[i][j].set_order = j + 1;
+      }
+    }
     const args: Data = {
       workoutItemArray: orderChangedWeek,
       deleteIdList,
     };
     const url = `http://localhost:8000/api/workout-sets/17`;
     const res = await axios.put(url, args);
-    setOrderChangedWeek([...orderChangedWeek]);
+    setCurrWorkoutSets(res.data.userData);
+    setDeleteIdList([]);
   };
 
   return (

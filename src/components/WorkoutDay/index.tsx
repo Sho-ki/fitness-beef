@@ -16,7 +16,7 @@ type Props = {
 
 const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHandler }: Props) => {
   const { orderChangedWeek, dayOfToday, saveSetItems } = React.useContext(WorkoutSetItemContext);
-
+  console.log(orderChangedWeek[dayOfToday]);
   return (
     <>
       <div className='show-today'>
@@ -44,7 +44,8 @@ const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHa
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {orderChangedWeek[dayOfToday].length <= 0 && <p>No Workouts Are Registered</p>}
+              {(orderChangedWeek[dayOfToday].length <= 0 ||
+                orderChangedWeek[dayOfToday][0].workout_item === null) && <p>No Workouts Are Registered</p>}
               {orderChangedWeek[dayOfToday] &&
                 orderChangedWeek[dayOfToday].map(
                   (workoutset, i) =>
