@@ -142,7 +142,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
 
     // If an invalid DnD is operated, return and nothing happens
     if (!destination) return;
-    if (source.droppableId === destination.droppableId && destination.droppableId === 'workoutItems') return;
+    if (destination.droppableId === 'workoutItems') return;
     if (source.droppableId === 'workoutSetItems' && destination.droppableId === 'deleteList') return;
 
     const todaysItems = Array.from(orderChangedWeek[dayOfToday]);
