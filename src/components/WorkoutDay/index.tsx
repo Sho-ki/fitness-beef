@@ -16,7 +16,6 @@ type Props = {
 
 const WorkoutDay: React.FC<Props> = ({ onPrevDayChangeHandler, onNextDayChangeHandler }: Props) => {
   const { orderChangedWeek, dayOfToday, saveSetItems } = React.useContext(WorkoutSetItemContext);
-  console.log(orderChangedWeek[dayOfToday]);
   return (
     <>
       <div className='show-today'>
