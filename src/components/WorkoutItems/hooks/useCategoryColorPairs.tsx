@@ -45,14 +45,3 @@ const useCategoryColorPair = (initialState: State): [State, Handlers] => {
 };
 
 export default useCategoryColorPair;
-
-// color:{"WarmUp":"pink",
-//  "Arms":"green",
-//  "Legs":"blue",
-//  "Chest":"black",
-// "Abs":"black",
-// "Glutes":"darkblue",
-// "Back":"purple",
-// "Shoulders":"black",
-// "UpperBody":"red",
-// "LowerBody":"red"}
