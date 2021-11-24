@@ -10,31 +10,30 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Box } from '@mui/system';
+import { Droppable } from 'react-beautiful-dnd';
+import React, { useEffect } from 'react';
 
 import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
-import useWorkoutItems from './hooks/useWorkoutItems';
 import useCategoryColorPair from './hooks/useCategoryColorPairs';
-import { WorkoutItem } from '../../types/workout';
+import { AddIcon, DeleteIcon } from '../Icon';
 import { CategoryColor } from '../../types/workout';
+import { Handlers, State } from './hooks/useWorkoutItems';
 
-type Data = {
+export type Data = {
   name: string;
   category: string;
 };
 
 type Props = {
-  workoutitems: WorkoutItem[];
+  workoutitems: State[];
+  handlers: Handlers;
   categorycolor: CategoryColor[];
 };
 
-const ItemModal = ({ workoutitems, categorycolor }: Props) => {
-  const [state, handlers] = useWorkoutItems(workoutitems);
+const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
   const style = {
     position: 'absolute' as 'absolute',
@@ -84,20 +83,20 @@ const ItemModal = ({ workoutitems, categorycolor }: Props) => {
       category,
     };
     if (editItemId) {
-      const updateURL = `http://localhost:8000/api/workout-items/${state[0].users_id}/${editItemId}`;
+      const updateURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}/${editItemId}`;
       const res = await axios.put(updateURL, args);
       setMessage(res.data.message);
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(state[0].users_id);
+        handlers.onGetWorkoutItems(workoutitems[0].users_id);
         setOpen(false);
       }
     } else {
-      const insertURL = `http://localhost:8000/api/workout-items/${state[0].users_id}`;
+      const insertURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}`;
       const res = await axios.post(insertURL, args);
       setMessage(res.data.message);
 
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(state[0].users_id);
+        handlers.onGetWorkoutItems(workoutitems[0].users_id);
         setCategory('');
         setWorkoutName('');
       }
@@ -128,29 +127,39 @@ const ItemModal = ({ workoutitems, categorycolor }: Props) => {
     setWorkoutName(name);
   }, []);
 
+  const getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? 'pink' : '',
+    borderRadius: '50%',
+    width: '80px',
+    height: '80px',
+  });
+
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          minHeight: '7em',
-          alignItems: 'end',
-        }}
-      >
+      <div className='workout-item-list'>
         <CustomizedDialogs
           categorycolor={categoryColor}
           onUpdateCategoryColorPair={categorycolorHandlers.onUpdateCategoryColorPair}
         />
       </div>
-      <WorkoutItems workoutitems={state} onClickEdit={onClickEdit} />
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <WorkoutItems workoutitems={workoutitems} onClickEdit={onClickEdit} />
+      <div className='workout-item-btn-area'>
         <Button onClick={handleOpen}>
           <AddIcon fontSize='medium' color='primary' />
         </Button>
-        <Button onClick={handleOpen}>
-          <DeleteIcon fontSize='medium' color='primary' />
-        </Button>
+
+        <Droppable droppableId='deleteList'>
+          {(provided, snapshot) => (
+            <Button
+              onClick={handleOpen}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
+              <DeleteIcon fontSize='medium' color='primary' />
+            </Button>
+          )}
+        </Droppable>
       </div>
       <Modal
         open={open}
@@ -187,19 +196,19 @@ const ItemModal = ({ workoutitems, categorycolor }: Props) => {
                 >
                   <MenuItem value={'Warm Up'}>Warm Up</MenuItem>
                   <MenuItem value={'Arms'}>Arms</MenuItem>
-                  <MenuItem value={'Legs'}>Legs</MenuItem> <MenuItem value={'Chest'}>Chest</MenuItem>{' '}
-                  <MenuItem value={'Abs'}>Abs</MenuItem> <MenuItem value={'Glutes'}>Glutes</MenuItem>{' '}
-                  <MenuItem value={'Back'}>Back</MenuItem> <MenuItem value={'Shoulders'}>Shoulders</MenuItem>{' '}
-                  <MenuItem value={'Upper Body'}>Upper Body</MenuItem>{' '}
+                  <MenuItem value={'Legs'}>Legs</MenuItem> <MenuItem value={'Chest'}>Chest</MenuItem>
+                  <MenuItem value={'Abs'}>Abs</MenuItem> <MenuItem value={'Glutes'}>Glutes</MenuItem>
+                  <MenuItem value={'Back'}>Back</MenuItem> <MenuItem value={'Shoulders'}>Shoulders</MenuItem>
+                  <MenuItem value={'Upper Body'}>Upper Body</MenuItem>
                   <MenuItem value={'Lower Body'}>Lower Body</MenuItem>
                 </Select>
               </FormControl>
-              <div style={{ position: 'absolute', right: '3em', bottom: '2em' }}>
+              <div className='modal-btn-area'>
                 <Stack spacing={2} direction='row'>
                   <Button
                     name='on-close'
                     variant='outlined'
-                    color='secondary'
+                    color='primary'
                     onClick={handleClose}
                     disabled={isLoading}
                   >
@@ -208,7 +217,7 @@ const ItemModal = ({ workoutitems, categorycolor }: Props) => {
                   <Button
                     name='on-submit'
                     variant='contained'
-                    color='secondary'
+                    color='primary'
                     type='submit'
                     disabled={isLoading}
                   >
@@ -220,6 +229,31 @@ const ItemModal = ({ workoutitems, categorycolor }: Props) => {
           </form>
         </>
       </Modal>
+      <style jsx>
+        {`
+          .workout-item-list {
+            display: flex;
+            justify-content: center;
+            min-height: 5em;
+            align-items: end;
+          }
+          .save-btn-area {
+            text-align: right;
+            margin: 2em;
+          }
+
+          .workout-item-btn-area {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .modal-btn-area {
+            position: absolute;
+            right: 3em;
+            bottom: 2em;
+          }
+        `}
+      </style>
     </div>
   );
 };

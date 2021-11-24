@@ -1,14 +1,15 @@
-import { Button, List, ListItem, TextField } from '@mui/material';
+import React from 'react';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
-import ItemModal from './ItemModal';
-import useWorkoutItems from './hooks/useWorkoutItems';
-import { State } from './hooks/useWorkoutItems';
+import { Button, List, ListItem, TextField } from '@mui/material';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
+
+import { CategoryColors } from '../../styles/Colors';
+import { DragIndicatorIcon } from '../Icon';
 import { WorkoutItem } from '../../types/workout';
 
 type Props = {
   workoutitems: WorkoutItem[];
-  onClickEdit: (userId: any, categoryName: any, name: any, itemId: any) => void;
+  onClickEdit: (userId: number | null, categoryName: string, name: string | null, itemId: number) => void;
 };
 
 const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
@@ -26,13 +27,9 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
       .filter((workoutitem) => {
         return (
           (workoutitem.workout_item &&
-            workoutitem.workout_item
-              .toLowerCase()
-              .indexOf(searchFilter.toLowerCase()) >= 0) ||
+            workoutitem.workout_item.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0) ||
           (workoutitem.category &&
-            workoutitem.category
-              .toLowerCase()
-              .indexOf(searchFilter.toLowerCase()) >= 0)
+            workoutitem.category.toLowerCase().indexOf(searchFilter.toLowerCase()) >= 0)
         );
       });
   }, [workoutitems, searchFilter]);
@@ -55,40 +52,64 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
           onChange={(e) => onSearchHandler(e.target.value)}
         />
 
-        <List sx={{ width: '100%', height: '80vh', overflow: 'scroll' }}>
-          {filteredItems.map(
-            (workoutitem, i) =>
-              workoutitem.workout_item && (
-                <ListItem
-                  sx={{
-                    width: '100%',
-                    textAlign: 'center',
-                    display: 'block',
-                  }}
-                  key={workoutitem.id}
-                >
-                  <Button
-                    variant='outlined'
-                    sx={{
-                      borderRadius: 5,
-                      width: '80%',
-                      minHeight: '5em',
-                    }}
-                    onClick={() =>
-                      onClickEdit(
-                        workoutitem.users_id,
-                        workoutitem.category,
-                        workoutitem.workout_item,
-                        workoutitem.id
-                      )
-                    }
-                  >
-                    {workoutitem.workout_item}
-                  </Button>
-                </ListItem>
-              )
+        <Droppable droppableId='workoutItems'>
+          {(provided) => (
+            <List
+              sx={{ width: '100%', height: '70vh', overflow: 'scroll' }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {filteredItems.map(
+                (workoutitem, idx) =>
+                  workoutitem.workout_item && (
+                    <Draggable
+                      draggableId={JSON.stringify({
+                        workoutitem: workoutitem,
+                      })}
+                      index={idx}
+                      key={workoutitem.id}
+                    >
+                      {(provided) => (
+                        <ListItem
+                          sx={{
+                            width: '100%',
+                            textAlign: 'center',
+                            display: 'block',
+                          }}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <DragIndicatorIcon />
+                          <Button
+                            variant='outlined'
+                            style={{
+                              borderRadius: 20,
+                              width: '80%',
+                              minHeight: '4em',
+                              border: `1px solid ${CategoryColors[workoutitem.color]}`,
+                              backgroundColor: `${CategoryColors[workoutitem.color]}`,
+                            }}
+                            onClick={() =>
+                              onClickEdit(
+                                workoutitem.users_id,
+                                workoutitem.category,
+                                workoutitem.workout_item,
+                                workoutitem.id
+                              )
+                            }
+                          >
+                            {workoutitem.workout_item}
+                          </Button>
+                        </ListItem>
+                      )}
+                    </Draggable>
+                  )
+              )}
+              {provided.placeholder}
+            </List>
           )}
-        </List>
+        </Droppable>
       </Box>
     </>
   );

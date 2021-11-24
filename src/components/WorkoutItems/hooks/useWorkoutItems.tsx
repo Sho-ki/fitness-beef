@@ -11,20 +11,35 @@ const getWorkoutItems = async (userId: number | null) => {
   }
 };
 
+const deleteWorkoutItem = async (workoutItemId: number | null) => {
+  const url = `http://localhost:8000/api/workout-items/${workoutItemId}`;
+  const res = await axios.delete(url);
+  if (res.status === 200) {
+    return await res.data;
+  }
+};
+
 export type State = WorkoutItem;
 
 export type Handlers = {
   onGetWorkoutItems: (userId: number | null) => void;
+  onDeleteWorkoutItem: (workoutItemId: number, deleteIndex: number) => void;
 };
 
 const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
   const [state, setWorkoutItems] = React.useState(initialState);
 
-  const onGetWorkoutItems = React.useCallback(async (userId: number | null) => {
+  const onGetWorkoutItems = async (userId: number | null) => {
     setWorkoutItems(await getWorkoutItems(userId));
-  }, []);
+  };
 
-  return [state, { onGetWorkoutItems }];
+  const onDeleteWorkoutItem = async (workoutItemId: number | null, deleteIndex: number) => {
+    state.splice(deleteIndex, 1);
+    setWorkoutItems([...state]);
+    await deleteWorkoutItem(workoutItemId);
+  };
+
+  return [state, { onGetWorkoutItems, onDeleteWorkoutItem }];
 };
 
 export default useWorkoutItems;
