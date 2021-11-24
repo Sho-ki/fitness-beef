@@ -41,7 +41,7 @@ const Cell = ({ schedules }: Data) => {
               display: 'flex',
               flexDirection: 'column',
               '& > :not(style)': {
-                borderColor: 'black',
+                borderColor: '#000000',
                 width: '99%',
                 margin: '0 auto',
                 marginBottom: '5px',

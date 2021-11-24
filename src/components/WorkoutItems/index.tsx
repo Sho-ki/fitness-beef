@@ -16,7 +16,7 @@ const WorkoutItems = ({ workoutitems }: Props) => {
     <>
       <Box
         sx={{
-          bgcolor: 'smokewhite',
+          bgcolor: '#F5F5F5',
           width: '100%',
           border: 1,
           borderRadius: 5,

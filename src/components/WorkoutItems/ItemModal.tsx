@@ -40,7 +40,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   height: 500,
-  bgcolor: 'white',
+  bgcolor: '#F5F5F5',
   border: '2px solid #000',
   boxShadow: 24,
   py: 18,

@@ -26,7 +26,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
 
   const [reps, setReps] = React.useState(workoutset.reps);
   const [sets, setSets] = React.useState(workoutset.sets);
-  const [focusedInp, setFocusedInp] = React.useState('reps');
+  const [focusedInput, setFocusedInput] = React.useState('reps');
 
   const onChangeReps = (input: number) => {
     setReps(input);
@@ -67,7 +67,7 @@ const SetItem = ({ workoutset, idx }: Props) => {
                 display: 'flex',
                 marginLeft: '1em',
                 alignItems: 'center',
-                color: `${CategoryColors[workoutset.color] === '#000000' ? 'white' : 'black'}`,
+                color: `${CategoryColors[workoutset.color] === '#000000' ? '#F5F5F5' : '#000000'}`,
                 backgroundColor: `${CategoryColors[workoutset.color]}`,
               }}
             >
@@ -84,11 +84,11 @@ const SetItem = ({ workoutset, idx }: Props) => {
               {open && (
                 <Typography variant='h5' sx={{ width: '30%' }}>
                   <Box sx={{ fontSize: '13px', color: '#757575', display: 'flex', flexDirection: 'column' }}>
-                    <label className={` ${focusedInp === 'reps' ? 'focusInp' : ''}`} htmlFor='reps'>
+                    <label className={` ${focusedInput === 'reps' ? 'focusInput' : ''}`} htmlFor='reps'>
                       Reps
                     </label>
                     <input
-                      className='numInp'
+                      className='numInput'
                       type='number'
                       id='reps'
                       name='reps'
@@ -97,19 +97,19 @@ const SetItem = ({ workoutset, idx }: Props) => {
                       value={reps || 0}
                       onChange={(e) => onChangeReps(Number(e.target.value))}
                       onFocus={() => {
-                        setFocusedInp('reps');
+                        setFocusedInput('reps');
                       }}
                       autoFocus
                       onBlur={() => {
-                        setFocusedInp('');
+                        setFocusedInput('');
                       }}
                     />
 
-                    <label className={` ${focusedInp === 'sets' ? 'focusInp' : ''}`} htmlFor='sets'>
+                    <label className={` ${focusedInput === 'sets' ? 'focusInput' : ''}`} htmlFor='sets'>
                       Sets
                     </label>
                     <input
-                      className='numInp'
+                      className='numInput'
                       type='number'
                       id='sets'
                       name='sets'
@@ -118,10 +118,10 @@ const SetItem = ({ workoutset, idx }: Props) => {
                       value={sets || 0}
                       onChange={(e) => onChangeSets(Number(e.target.value))}
                       onFocus={() => {
-                        setFocusedInp('sets');
+                        setFocusedInput('sets');
                       }}
                       onBlur={() => {
-                        setFocusedInp('');
+                        setFocusedInput('');
                       }}
                     />
                   </Box>

@@ -31,7 +31,7 @@ const CategoryModalBody = ({ category, color, currentState, setCategoriesColors 
     'red',
     'pink',
     'orange',
-    'black',
+    '#000000',
   ];
   return (
     <>

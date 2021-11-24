@@ -25,10 +25,10 @@ const workoutDayStyle = css`
     margin-left: 2em;
     display: inline-block;
     text-align: left;
-    font-size: larger;
+    font-size: 20px;
   }
 
-  .numInp {
+  .numInput {
     width: 100%;
     border: none;
     border-bottom: 1px solid #757575;
@@ -36,37 +36,37 @@ const workoutDayStyle = css`
     margin-bottom: 10px;
   }
 
-  .numInp:focus {
+  .numInput:focus {
     outline: none;
-    border-bottom: 2px solid #1e90ff;
+    border-bottom: 2px solid #1976d2;
   }
 
-  .focusInp {
-    color: #1e90ff;
+  .focusInput {
+    color: #1976d2;
   }
 
   .btn {
     border-radius: 5px;
     background-color: transparent;
-    color: black;
+    color: #000000;
     padding: 2px 8px;
     font-size: 13px;
     cursor: pointer;
   }
   .cancel-btn {
-    border: 1px solid black;
-    border-color: #0079f0;
-    color: #0079f0;
+    border: 1px solid #000000;
+    border-color: #1976d2;
+    color: #1976d2;
   }
   .cancel-btn:hover {
     filter: brightness(1.2);
-    color: #0079f0;
+    color: #1976d2;
   }
 
   .submit-btn {
     border: none;
-    color: white;
-    background-color: #0079f0;
+    color: #ffffff;
+    background-color: #1976d2;
   }
 
   .submit-btn:hover {

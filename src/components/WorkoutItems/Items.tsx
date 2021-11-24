@@ -37,7 +37,7 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
     <>
       <Box
         sx={{
-          bgcolor: 'smokewhite',
+          bgcolor: '#F5F5F5',
           width: '100%',
           border: 1,
           borderRadius: 5,
@@ -84,6 +84,9 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
                           <Button
                             variant='outlined'
                             style={{
+                              color: `${
+                                CategoryColors[workoutitem.color] === '#000000' ? '#F5F5F5' : '#000000'
+                              }`,
                               borderRadius: 20,
                               width: '80%',
                               minHeight: '4em',
