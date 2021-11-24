@@ -82,7 +82,6 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
   const [state, handlers] = useWorkoutItems(workoutitems);
   const [orderChangedWeek, setOrderChangedWeek] = React.useState(week);
   const [deleteIdList, setDeleteIdList] = React.useState<number[]>([]);
-  console.log(deleteIdList);
   const [currWorkoutSets, setCurrWorkoutSets] = React.useState(workoutsets);
   React.useEffect(() => {
     currWorkoutSets.sort((a, b) => {

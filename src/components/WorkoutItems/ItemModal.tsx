@@ -33,27 +33,27 @@ type Props = {
   categorycolor: CategoryColor[];
 };
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 700,
+  height: 500,
+  bgcolor: 'white',
+  border: '2px solid #000',
+  boxShadow: 24,
+  py: 18,
+  px: 8,
+  justifyContent: 'center',
+  display: 'flex',
+  alignItems: 'center',
+};
+
 const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    height: 500,
-    bgcolor: 'white',
-    border: '2px solid #000',
-    boxShadow: 24,
-    py: 18,
-    px: 8,
-    justifyContent: 'center',
-    display: 'flex',
-    alignItems: 'center',
-  };
 
   const [open, setOpen] = React.useState(false);
-
   const [workoutName, setWorkoutName] = React.useState('');
   const [category, setCategory] = React.useState('');
   const [message, setMessage] = React.useState();
