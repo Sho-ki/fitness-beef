@@ -22,16 +22,39 @@ const initialState: State = {
 };
 
 const Signin = () => {
-  const [isValidLogin, setIsValidLogin] = React.useState<boolean | undefined>();
+  const [isValidInput, setIsValidInput] = React.useState<boolean>();
+  const [message, setMessage] = React.useState<string>();
   const [userInput, setUserInput] = React.useState(initialState);
   const [isSignin, setIsSignin] = React.useState(true);
   const router = useRouter();
 
   const handleSubmit = async () => {
-    const url = `http://localhost:8000/signIn`;
-    const res = await axios.post(url, { email: userInput.email, password: userInput.password });
-    if (res.status === 200 || res.status === 201) {
-      router.push(`user/${res.data.id}/edit`);
+    if (isSignin) {
+      try {
+        const url = `http://localhost:8000/signIn`;
+        const res = await axios.post(url, { email: userInput.email, password: userInput.password });
+        setIsValidInput(true);
+        router.push(`user/${res.data.id}/edit`);
+      } catch (e) {
+        setIsValidInput(false);
+        setMessage('Wrong Email or Password');
+      }
+    } else {
+      if (!userInput.email || !userInput.password) {
+        setIsValidInput(false);
+        setMessage('Please Enter Your Email Address and Password');
+        return;
+      }
+      try {
+        const url = `http://localhost:8000/signUp`;
+        const res = await axios.post(url, { email: userInput.email, password: userInput.password });
+        setIsValidInput(true);
+        const userId = res.data.userId;
+        router.push(`user/${userId}/edit`);
+      } catch (e) {
+        setIsValidInput(false);
+        setMessage('User Already Exists');
+      }
     }
   };
 
@@ -45,6 +68,7 @@ const Signin = () => {
 
   const onIsSigninHandler = () => {
     setIsSignin(isSignin ? false : true);
+    setMessage('');
   };
 
   return (
@@ -59,19 +83,19 @@ const Signin = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }} />
-
           <Typography component='h1' variant='h5'>
             {isSignin ? 'Sign in' : 'Sign up'}
           </Typography>
-
           <TextFieldInput
-            id={'username'}
+            required
+            id={'email'}
             label={'User Name'}
-            name={'username'}
+            name={'email'}
             onChange={onEmailChangeHandler}
             margin={textMargin.NORMAL}
           />
           <TextFieldInput
+            required
             id={'password'}
             label={'Password'}
             name={'password'}
@@ -80,11 +104,10 @@ const Signin = () => {
             onChange={onPasswordChangeHandler}
             margin={textMargin.NORMAL}
           />
-
+          {!isValidInput && <Typography color='red'>{message}</Typography>}
           <Button onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             {isSignin ? 'Sign In' : 'Sign Up'}
           </Button>
-
           <Typography>
             {isSignin ? (
               <>

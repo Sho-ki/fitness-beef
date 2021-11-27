@@ -18,9 +18,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 type Props = {
   categorycolor: CategoryColor[];
   onUpdateCategoryColorPair: (userId: number | null, categoryColorPair: CategoryColor[]) => void;
+  userId: number;
 };
 
-const CustomizedDialogs = ({ categorycolor, onUpdateCategoryColorPair }: Props) => {
+const CustomizedDialogs = ({ categorycolor, onUpdateCategoryColorPair, userId }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [categoriesColors, setCategoriesColors] = React.useState(categorycolor);
 
@@ -28,7 +29,7 @@ const CustomizedDialogs = ({ categorycolor, onUpdateCategoryColorPair }: Props) 
     setIsOpen(true);
   };
   const handleClose = () => {
-    onUpdateCategoryColorPair(17, categoriesColors);
+    onUpdateCategoryColorPair(userId, categoriesColors);
     setIsOpen(false);
   };
   return (

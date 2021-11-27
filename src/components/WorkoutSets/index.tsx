@@ -14,6 +14,7 @@ type Props = {
   workoutsets: WorkoutSet[];
   workoutitems: WorkoutItem[];
   categorycolor: CategoryColor[];
+  userId: number;
 };
 
 type Data = {
@@ -72,7 +73,7 @@ const addItem = (
   return todaysItems;
 };
 
-const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor }: Props) => {
+const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor, userId }: Props) => {
   let getDate = new Date();
   let today = getDate.getMonth() + 1 + ' / ' + getDate.getDate() + ' / ' + getDate.getFullYear();
   let dayOfWeek = getDate.getDay();
@@ -190,7 +191,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
       workoutItemArray: orderChangedWeek,
       deleteIdList,
     };
-    const url = `http://localhost:8000/api/workout-sets/17`;
+    const url = `http://localhost:8000/api/workout-sets/${userId}`;
     const res = await axios.put(url, args);
     setCurrWorkoutSets(res.data.userData);
     setDeleteIdList([]);
@@ -209,7 +210,12 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
               />
             </Grid>
             <Grid item xs={4}>
-              <ItemModal workoutitems={state} handlers={handlers} categorycolor={categorycolor} />
+              <ItemModal
+                workoutitems={state}
+                handlers={handlers}
+                categorycolor={categorycolor}
+                userId={userId}
+              />
             </Grid>
           </Grid>
         </DragDropContext>

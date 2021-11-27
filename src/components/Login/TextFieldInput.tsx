@@ -16,7 +16,6 @@ type Props = {
   id: string;
   label: string;
   name: string;
-
   onChange: (input: string) => void;
 };
 

@@ -31,6 +31,7 @@ type Props = {
   workoutitems: State[];
   handlers: Handlers;
   categorycolor: CategoryColor[];
+  userId: number;
 };
 
 const style = {
@@ -50,7 +51,7 @@ const style = {
   alignItems: 'center',
 };
 
-const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
+const ItemModal = ({ workoutitems, handlers, categorycolor, userId }: Props) => {
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
 
   const [open, setOpen] = React.useState(false);
@@ -83,20 +84,20 @@ const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
       category,
     };
     if (editItemId) {
-      const updateURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}/${editItemId}`;
+      const updateURL = `http://localhost:8000/api/workout-items/${userId}/${editItemId}`;
       const res = await axios.put(updateURL, args);
       setMessage(res.data.message);
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(workoutitems[0].users_id);
+        handlers.onGetWorkoutItems(userId);
         setOpen(false);
       }
     } else {
-      const insertURL = `http://localhost:8000/api/workout-items/${workoutitems[0].users_id}`;
+      const insertURL = `http://localhost:8000/api/workout-items/${userId}`;
       const res = await axios.post(insertURL, args);
       setMessage(res.data.message);
 
       if (res.status === 201) {
-        handlers.onGetWorkoutItems(workoutitems[0].users_id);
+        handlers.onGetWorkoutItems(userId);
         setCategory('');
         setWorkoutName('');
       }
@@ -140,6 +141,7 @@ const ItemModal = ({ workoutitems, handlers, categorycolor }: Props) => {
         <CustomizedDialogs
           categorycolor={categoryColor}
           onUpdateCategoryColorPair={categorycolorHandlers.onUpdateCategoryColorPair}
+          userId={userId}
         />
       </div>
       <WorkoutItems workoutitems={workoutitems} onClickEdit={onClickEdit} />
