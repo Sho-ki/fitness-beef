@@ -23,7 +23,7 @@ const initialState: State = {
 
 const Signin = () => {
   const [isValidInput, setIsValidInput] = React.useState<boolean>();
-  const [message, setMassage] = React.useState<string>();
+  const [message, setMessage] = React.useState<string>();
   const [userInput, setUserInput] = React.useState(initialState);
   const [isSignin, setIsSignin] = React.useState(true);
   const router = useRouter();
@@ -37,12 +37,12 @@ const Signin = () => {
         router.push(`user/${res.data.id}/edit`);
       } catch (e) {
         setIsValidInput(false);
-        setMassage('Wrong Email or Password');
+        setMessage('Wrong Email or Password');
       }
     } else {
       if (!userInput.email || !userInput.password) {
         setIsValidInput(false);
-        setMassage('Please Enter Your Email Address and Password');
+        setMessage('Please Enter Your Email Address and Password');
         return;
       }
       try {
@@ -53,7 +53,7 @@ const Signin = () => {
         router.push(`user/${userId}/edit`);
       } catch (e) {
         setIsValidInput(false);
-        setMassage('User Already Exists');
+        setMessage('User Already Exists');
       }
     }
   };
@@ -68,7 +68,7 @@ const Signin = () => {
 
   const onIsSigninHandler = () => {
     setIsSignin(isSignin ? false : true);
-    setMassage('');
+    setMessage('');
   };
 
   return (
