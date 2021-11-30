@@ -23,12 +23,14 @@ type Data = {
 };
 
 type setItemCtx = {
+  userId: number;
   orderChangedWeek: WorkoutSet[][];
   dayOfToday: number;
   onDeleteSetItem: (newArr: WorkoutSet[][], deleteId: number | null) => void;
   saveSetItems: () => void;
 };
 const DefaultCtxData: setItemCtx = {
+  userId: 0,
   orderChangedWeek: [],
   dayOfToday: -1,
   onDeleteSetItem: () => {},
@@ -197,8 +199,16 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
     setDeleteIdList([]);
   };
 
+  const resetState = () => {
+    setOrderChangedWeek([...week]);
+    setDeleteIdList([]);
+    setCurrWorkoutSets([...currWorkoutSets]);
+  };
+
   return (
-    <WorkoutSetItemContext.Provider value={{ onDeleteSetItem, orderChangedWeek, dayOfToday, saveSetItems }}>
+    <WorkoutSetItemContext.Provider
+      value={{ userId, onDeleteSetItem, orderChangedWeek, dayOfToday, saveSetItems }}
+    >
       <Container>
         <Typography>{today}</Typography>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -207,6 +217,7 @@ const WorkoutSets: React.FC<Props> = ({ workoutsets, workoutitems, categorycolor
               <WorkoutDay
                 onPrevDayChangeHandler={onPrevDayChangeHandler}
                 onNextDayChangeHandler={onNextDayChangeHandler}
+                resetState={resetState}
               />
             </Grid>
             <Grid item xs={4}>
