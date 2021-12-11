@@ -5,14 +5,15 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { CategoryColors } from '../../styles/Colors';
 import { DragIndicatorIcon } from '../Icon';
-import { WorkoutItem } from '../../types/workout';
+import { RealTimeColors, WorkoutItem } from '../../types/workout';
 
 type Props = {
   workoutitems: WorkoutItem[];
+  realTimeColors: RealTimeColors;
   onClickEdit: (userId: number | null, categoryName: string, name: string | null, itemId: number) => void;
 };
 
-const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
+const WorkoutItems = ({ workoutitems, onClickEdit, realTimeColors }: Props) => {
   const [searchFilter, setSearchFilter] = React.useState('');
 
   const onSearchHandler = (e: string) => {
@@ -33,6 +34,7 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
         );
       });
   }, [workoutitems, searchFilter]);
+
   return (
     <>
       <Box
@@ -85,13 +87,15 @@ const WorkoutItems = ({ workoutitems, onClickEdit }: Props) => {
                             variant='outlined'
                             style={{
                               color: `${
-                                CategoryColors[workoutitem.color] === '#000000' ? '#F5F5F5' : '#000000'
+                                CategoryColors[realTimeColors[workoutitem.category]] === '#000000'
+                                  ? '#F5F5F5'
+                                  : '#000000'
                               }`,
                               borderRadius: 20,
                               width: '80%',
                               minHeight: '4em',
-                              border: `1px solid ${CategoryColors[workoutitem.color]}`,
-                              backgroundColor: `${CategoryColors[workoutitem.color]}`,
+                              border: `1px solid ${CategoryColors[realTimeColors[workoutitem.category]]}`,
+                              backgroundColor: `${CategoryColors[realTimeColors[workoutitem.category]]}`,
                             }}
                             onClick={() =>
                               onClickEdit(

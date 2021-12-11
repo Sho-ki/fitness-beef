@@ -35,12 +35,11 @@ const useCategoryColorPair = (initialState: State): [State, Handlers] => {
     async (userId: number | null, categoryColorPair: State) => {
       const resp = await updateCategoryColorPair(userId, categoryColorPair);
       if (resp.message) {
-        setCategoryColorPair(categoryColorPair);
+        setCategoryColorPair([...categoryColorPair]);
       }
     },
     []
   );
-
   return [categoryColorPair, { onUpdateCategoryColorPair }];
 };
 

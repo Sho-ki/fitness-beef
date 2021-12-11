@@ -19,7 +19,7 @@ import CustomizedDialogs from './CategoryModal';
 import WorkoutItems from './Items';
 import useCategoryColorPair from './hooks/useCategoryColorPairs';
 import { AddIcon, DeleteIcon } from '../Icon';
-import { CategoryColor } from '../../types/workout';
+import { Categories, Colors, CategoryColor, RealTimeColors } from '../../types/workout';
 import { Handlers, State } from './hooks/useWorkoutItems';
 
 export type Data = {
@@ -53,6 +53,7 @@ const style = {
 
 const ItemModal = ({ workoutitems, handlers, categorycolor, userId }: Props) => {
   const [categoryColor, categorycolorHandlers] = useCategoryColorPair(categorycolor);
+  const [realTimeColors, setRealTimeColors] = React.useState<RealTimeColors>();
 
   const [open, setOpen] = React.useState(false);
   const [workoutName, setWorkoutName] = React.useState('');
@@ -135,6 +136,15 @@ const ItemModal = ({ workoutitems, handlers, categorycolor, userId }: Props) => 
     height: '80px',
   });
 
+  React.useEffect(() => {
+    const obj = {} as RealTimeColors;
+    for (const cc of categoryColor) {
+      const category = cc.category as Categories;
+      const color = cc.color as Colors;
+      obj[category] = color;
+    }
+    setRealTimeColors(obj);
+  }, [categoryColor]);
   return (
     <div>
       <div className='workout-item-list'>
@@ -144,7 +154,9 @@ const ItemModal = ({ workoutitems, handlers, categorycolor, userId }: Props) => 
           userId={userId}
         />
       </div>
-      <WorkoutItems workoutitems={workoutitems} onClickEdit={onClickEdit} />
+      {realTimeColors && (
+        <WorkoutItems workoutitems={workoutitems} realTimeColors={realTimeColors} onClickEdit={onClickEdit} />
+      )}
       <div className='workout-item-btn-area'>
         <Button onClick={handleOpen}>
           <AddIcon fontSize='medium' color='primary' />
