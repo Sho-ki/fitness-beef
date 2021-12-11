@@ -29,9 +29,9 @@ export type Handlers = {
 const useWorkoutItems = (initialState: WorkoutItem[]): [State[], Handlers] => {
   const [state, setWorkoutItems] = React.useState(initialState);
 
-  const onGetWorkoutItems = async (userId: number | null) => {
+  const onGetWorkoutItems = React.useCallback(async (userId: number | null) => {
     setWorkoutItems(await getWorkoutItems(userId));
-  };
+  }, []);
 
   const onDeleteWorkoutItem = async (workoutItemId: number | null, deleteIndex: number) => {
     state.splice(deleteIndex, 1);

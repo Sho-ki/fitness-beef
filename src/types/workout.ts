@@ -70,3 +70,7 @@ export const dayCombination: { [key: number]: DayOfWeek } = {
   5: DayOfWeek.Fri,
   6: DayOfWeek.Sat,
 };
+
+export type RealTimeColors = {
+  [key in Categories]: Colors;
+};
